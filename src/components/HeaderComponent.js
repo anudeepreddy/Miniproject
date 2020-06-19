@@ -3,7 +3,7 @@ import {useLocation} from 'react-router-dom';
 import {Layout,Menu,Avatar,Dropdown,Button} from 'antd';
 const {Header} = Layout;
 
-const pages=["/home"]
+// const pages=["/home"]
 const menu = (
   <Menu style={{width:200, padding:"16px 24px"}}>
     <h4>Anudeep Reddy</h4>
