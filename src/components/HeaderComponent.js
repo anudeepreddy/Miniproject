@@ -27,7 +27,7 @@ function HeaderComponent(props) {
         <div className="userAvatar" style={{ float: 'right' }}>
           <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
             <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
-              A
+              {props.username[0].toUpper()}
             </Avatar>
           </Dropdown>
         </div>
@@ -40,7 +40,7 @@ function HeaderComponent(props) {
         <div style={{display:"flex"}}>
             <Breadcrumb style={{alignSelf:"center"}}>
               <Breadcrumb.Item>{props.username}</Breadcrumb.Item>
-              <Breadcrumb.Item overlay={workspaceMenu}>{props.workspaceName}</Breadcrumb.Item>
+              <Breadcrumb.Item overlay={workspaceMenu} trigger={['click']}>{props.workspaceName}</Breadcrumb.Item>
             </Breadcrumb>
         </div>
         <div className="userAvatar" style={{ }}>

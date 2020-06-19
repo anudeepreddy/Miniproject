@@ -7241,7 +7241,7 @@ textarea.ant-picker-input > input {
   line-height: 1.5715;
   list-style: none;
   font-feature-settings: tnum;
-  border-top: 1px solid #1e1e1e;
+  border-top: 1px solid #FFFFFF;
 }
 .ant-divider-vertical {
   position: relative;
@@ -7251,7 +7251,7 @@ textarea.ant-picker-input > input {
   margin: 0 8px;
   vertical-align: middle;
   border-top: 0;
-  border-left: 1px solid #1e1e1e;
+  border-left: 1px solid #FFFFFF;
 }
 .ant-divider-horizontal {
   display: flex;
@@ -7275,7 +7275,7 @@ textarea.ant-picker-input > input {
   position: relative;
   top: 50%;
   width: 50%;
-  border-top: 1px solid #1e1e1e;
+  border-top: 1px solid #FFFFFF;
   transform: translateY(50%);
   content: '';
 }

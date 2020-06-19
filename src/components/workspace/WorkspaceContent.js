@@ -17,7 +17,6 @@ constructor(props) {
       selectOnLineNumbers: true
     };
     return (
-        <Content style={{marginRight:"10px"}}>
       <MonacoEditor
         language="javascript"
         theme="vs-dark"
@@ -25,7 +24,6 @@ constructor(props) {
         value={code}
         options={options}
       />
-      </Content>
     );
   }
 }
