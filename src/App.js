@@ -5,14 +5,14 @@ import {
   Route
 } from "react-router-dom";
 import Home from 'pages/Home';
-import Editor from 'pages/Editor';
+import Workspace from 'pages/Workspace';
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/home" component={Home}/>
-        <Route exact path="/editor" component={Editor}/>
+        <Route exact path="/workspace" component={Workspace}/>
       </Switch>
     </Router>
   );

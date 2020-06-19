@@ -6,7 +6,7 @@ import HomeContent from 'components/home/HomeContent';
 function Home(){
   return (
     <Layout>
-      <HeaderComponent/>
+      <HeaderComponent username="Anudeep"/>
       <HomeContent/>
     </Layout>
   );
