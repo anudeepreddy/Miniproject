@@ -12,7 +12,7 @@ function Login() {
   const [size] = useState(8);
 return(   
 <Row>
-      <Col>
+      <Col span={7}>
           <Card bordered={false} style={{
             minHeight: "100vh",
             display: "flex",
