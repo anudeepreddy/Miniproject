@@ -42,12 +42,12 @@ return(
           placeholder="Password"
           iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
         />
-        <a style={{
-            textAlign:'right',
-            float:'right'
-        }} href="/">Forgot Password?</a>
       </Form.Item>
       <Form.Item>
+                  <a style={{
+            textAlign:'right',
+            float:'right'
+        }} href="/">Forgot Password?</a>        
         <Form.Item name="remember" valuePropName="checked" noStyle>
           <Checkbox align="middle">Remember me</Checkbox>
           <ExclamationCircleOutlined />
@@ -73,7 +73,7 @@ return(
       <img style={{
    position: 'absolute',
    top: '4%',
-   left: '20%',
+   left: '19.8%',
    width: '600px',
    height: '500px'
 }}src="/login.svg" alt="text" ></img>
