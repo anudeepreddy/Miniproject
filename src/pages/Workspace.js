@@ -12,10 +12,10 @@ function Workspace() {
       <HeaderComponent username="Anudeep" workspaceName="mark1"/>
       <Content>
       <Row>
-        <Col span={20} style={{}}>
+        <Col span={19} style={{}}>
           <WorkspaceContent />
         </Col>
-        <Col span={4}>
+        <Col span={5}>
           <WorkspaceSidebar language={{name:"C++",value:"cpp"}}/>
         </Col>
       </Row>
