@@ -14,7 +14,7 @@ const userMenu = (
 
 const workspaceMenu = (
   <Menu style={{ width: 200, padding: '16px 24px' }}>
-    <h4>This will be implementd soon</h4>
+    <h4>This will be implemented soon</h4>
   </Menu>
 );
 
@@ -27,7 +27,7 @@ function HeaderComponent(props) {
         <div className="userAvatar" style={{ float: 'right' }}>
           <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
             <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
-              {props.username[0].toUpper()}
+              {props.username[0].toUpperCase()}
             </Avatar>
           </Dropdown>
         </div>
@@ -46,7 +46,7 @@ function HeaderComponent(props) {
         <div className="userAvatar" style={{ }}>
           <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
             <Avatar style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
-              {props.username[0]}
+              {props.username[0].toUpperCase()}
             </Avatar>
           </Dropdown>
         </div>

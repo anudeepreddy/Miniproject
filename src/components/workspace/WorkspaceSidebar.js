@@ -11,7 +11,7 @@ background-color:#383838;
 display:flex;
 flex-direction:row;
 height:3em;
-width:15em;
+width:18em;
 align-items:center;
 margin:1em 0;
 padding:0 1em;
@@ -23,7 +23,7 @@ function WorkspaceSidebar(props) {
     <Card style={{ minHeight: 'calc(100vh - 64px)' }}>
       <Divider>Language</Divider>
       <Select
-        style={{ width: 200 }}
+        style={{ width: "18em" }}
         placeholder="Select a Language"
         defaultValue={props.language.value}
       >
@@ -44,7 +44,7 @@ function WorkspaceSidebar(props) {
       </div>
       <div>
         <p>Add Members:</p>
-        <Select showSearch style={{ width: 200 }}></Select>
+        <Select showSearch style={{ width: "18em" }}></Select>
       </div>
       <Divider>Members</Divider>
       <div>
