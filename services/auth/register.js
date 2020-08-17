@@ -23,7 +23,7 @@ exports.register =async (req, res) => {
         res.status(200).send({ status: true, redirect: "/login" });
       })
       .catch((err) => {
-        res.status(400).send({
+        res.status(200).send({
           status: false,
           message: "Registration Unsuccessful. Try Again",
         });

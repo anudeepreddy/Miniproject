@@ -9,7 +9,7 @@ exports.generateToken=(user)=>{
 exports.verifyToken=(req,res,next)=>{
     if(req.headers.authorization && req.headers.authorization.split(' ')[0]==='Bearer'){
         var token = req.headers.authorization.split(' ')[1];
-        req.decodedToken={};
+        req.user={};
         jwt.verify(token,keys.jwtSecretToken,(error,tokenData)=>{
             if(error && error.name=='TokenExpiredError'){
                 return res.json({ status: false, message: error.name });
@@ -18,7 +18,7 @@ exports.verifyToken=(req,res,next)=>{
                 return res.status(400).json({status:false,message:'Unauthorized Request'});
             }
             if(tokenData)
-            req.decodedToken=tokenData;
+            req.user=tokenData;
 
             next();
         });
