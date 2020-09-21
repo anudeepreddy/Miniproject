@@ -13,7 +13,7 @@ function Workspace() {
       <Content>
       <Row>
         <Col span={19} style={{}}>
-          <WorkspaceContent />
+          <WorkspaceContent language='javascript' />
         </Col>
         <Col span={5}>
           <WorkspaceSidebar language={{name:"C++",value:"cpp"}}/>
