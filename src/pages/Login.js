@@ -3,11 +3,35 @@ import { useState } from 'react';
 import { Card, Row ,Col ,Form, Input, Button, Checkbox , Space } from 'antd';
 import { UserOutlined, LockOutlined , ExclamationCircleOutlined} from '@ant-design/icons';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import jwtdecode from 'jwt-decode';
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+const axios=require('axios');
+
+toast.configure();
 
 function Login() {
-    
+  
   const onFinish = values => {
     console.log('Received values of form: ', values);
+    axios.post('http://localhost:8000/user/login',values)
+    .then(res =>{
+      console.log(res);
+      const data=res.data;
+      console.log(data);
+      if(data.status)
+      {
+        localStorage.setItem(' token ' , data.accessToken );
+        localStorage.setItem(' user ' , jwtdecode(data.accessToken).username);
+        window.location='/home';
+      }
+      else{
+          toast.warn(data.message, { autoClose : 3000 });
+      }
+    })
+    .catch(err =>{
+      toast.error(err.message, { autoClose : 3000 });
+    });
   };
   const [size] = useState(8);
 return(   
