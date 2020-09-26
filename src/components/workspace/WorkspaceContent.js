@@ -1,18 +1,22 @@
 import React,{useState} from 'react';
-import Editor from "@monaco-editor/react";
-import {Layout} from 'antd';
+import {ControlledEditor} from "@monaco-editor/react";
 
-const {Content}=Layout;
 
 function EditorContent(props){
+   
    const [code,setCode]=useState("//Type your code here...");
 
-   return(
+   const handleChanges=(ev,value)=>{
+     setCode(value);
+     console.log(code);
+   };
 
-     <Editor
+   return(
+     <ControlledEditor
      height="90vh"
      theme='dark'
      language={props.language}
+     onChange={handleChanges}
      value={code}
      />
    );

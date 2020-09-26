@@ -12,7 +12,7 @@ function Workspace() {
       <HeaderComponent username="Anudeep" workspaceName="mark1"/>
       <Content>
       <Row>
-        <Col span={19} style={{}}>
+        <Col span={19} >
           <WorkspaceContent language='javascript' />
         </Col>
         <Col span={5}>
