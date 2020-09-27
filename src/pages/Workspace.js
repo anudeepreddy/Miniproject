@@ -12,8 +12,8 @@ function Workspace() {
       <HeaderComponent username="Anudeep" workspaceName="mark1"/>
       <Content>
       <Row>
-        <Col span={19} style={{}}>
-          <WorkspaceContent />
+        <Col span={19} >
+          <WorkspaceContent language='javascript' />
         </Col>
         <Col span={5}>
           <WorkspaceSidebar language={{name:"C++",value:"cpp"}}/>
