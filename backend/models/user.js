@@ -1,4 +1,4 @@
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     },
     workspaces: [{
         type: mongoose.Schema.Types.ObjectId,
-            ref: 'WorkSpace'
+        ref: 'WorkSpace'
     }],
     salt: {
         type: String,
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     createdDate: {
         type: Date
     },
-    updatedDate:{
+    updatedDate: {
         type: Date,
     },
     isDeleted: {

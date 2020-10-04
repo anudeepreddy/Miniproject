@@ -1,34 +1,34 @@
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 const workspaceSchema = new mongoose.Schema({
-    name:{
+    name: {
         type: String,
         required: true,
         unique: true
     },
-    owner:{
+    owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    workspaceid:{
-        type:String
+    workspaceid: {
+        type: String
     },
-    collaborators:[{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+    collaborators: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }],
-    language:{
+    language: {
         type: String,
         required: true
     },
-    content:{
-        type:String
+    content: {
+        type: String
     },
-    sharing:{
-        type:Boolean,
-        default:false
+    sharing: {
+        type: Boolean,
+        default: false
     },
-    createdDate:{
-        type: Date, 
+    createdDate: {
+        type: Date,
         default: Date.now
     },
     isDeleted: {
