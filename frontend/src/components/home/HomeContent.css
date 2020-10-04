@@ -1,8 +1,8 @@
 .newWorkspaceCard {
-  width: 20em;
-  height: 10em;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    width: 20em;
+    height: 10em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
