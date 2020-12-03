@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, Checkbox, Col, Form, Input, Row, Space} from 'antd';
 import {
     ExclamationCircleOutlined,
@@ -7,34 +7,22 @@ import {
     LockOutlined,
     UserOutlined
 } from '@ant-design/icons';
-import jwtdecode from 'jwt-decode';
 import {toast} from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import {login,checkLogin} from '../redux/user/login';
+import { connect } from 'react-redux';
 
-const axios = require('axios');
 
 toast.configure();
 
-function Login() {
+function Login(props) {
 
+    useEffect(()=>{
+       props.checkLogin();
+    },[]);
     const onFinish = values => {
         console.log('Received values of form: ', values);
-        axios.post('http://localhost:8000/user/login', values)
-            .then(res => {
-                console.log(res);
-                const data = res.data;
-                console.log(data);
-                if (data.status) {
-                    localStorage.setItem(' token ', data.accessToken);
-                    localStorage.setItem(' user ', jwtdecode(data.accessToken).username);
-                    window.location = '/home';
-                } else {
-                    toast.warn(data.message, {autoClose: 3000});
-                }
-            })
-            .catch(err => {
-                toast.error(err.message, {autoClose: 3000});
-            });
+        props.Login(values);
     };
     const [size] = useState(8);
     return (
@@ -109,4 +97,14 @@ function Login() {
     );
 }
 
-export default Login;
+
+const mapStateToProps = (state) => ({
+    isLoggedIn: state.loggedIn
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    Login : (data)=> dispatch(login(data)),
+    checkLogin: () =>dispatch(checkLogin())
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Login);
