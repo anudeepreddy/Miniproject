@@ -99,7 +99,7 @@ function Login(props) {
 
 
 const mapStateToProps = (state) => ({
-    isLoggedIn: state.loggedIn
+    isLoggedIn: state.userLogin.loggedIn
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../axiosconfig';
 import {toast} from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import jwtdecode from 'jwt-decode';
@@ -20,15 +20,15 @@ export const userLogin = (state=initialState,action)=>{
         case LOGIN_USER:{
             return{
                 ...state,
-                loggedIn:action.payload
+                loggedIn : action.payload
             }
         }
         default : return state;
     }
 }
 
-export const login = (data) => async(dispatch)=>{
-    axios.post('http://localhost:8000/api/user/login', data)
+export const login = (data) => async(dispatch,getState)=>{
+    axios.post('/api/user/login', data)
     .then(res => {
         console.log(res);
         const data = res.data;
@@ -49,8 +49,8 @@ export const login = (data) => async(dispatch)=>{
     });
 }
 
-export const checkLogin = () => async(dispatch)=>{
-    axios.get('http://localhost:8000/api/user/isLoggedIn').then(response => {
+export const checkLogin = () => async(dispatch,getState)=>{
+    axios.get('/api/user/isLoggedIn').then(response => {
         let data = response.data;
         if(data.status){
             dispatch(loginUser(true));

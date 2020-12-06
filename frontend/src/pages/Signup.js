@@ -92,12 +92,8 @@ function Signup(props) {
     );
 }
 
-const mapStateToProps = (state) => ({
-    isRegistered: state.Registered
-})
-
 const mapDispatchToProps = (dispatch) => ({
     Register: (data) => dispatch(register(data))
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(Signup);
+export default connect(null,mapDispatchToProps)(Signup);
