@@ -1,31 +1,14 @@
 import React, {useState} from 'react';
 import {Button, Card, Col, Form, Input, Row, Space} from 'antd';
 import {EyeInvisibleOutlined, EyeTwoTone, LockOutlined, UserOutlined} from '@ant-design/icons';
-import {toast} from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+import { connect } from 'react-redux';
+import { register } from '../redux/user/register';
 
-const axios = require('axios');
-
-toast.configure();
-
-function Signup() {
+function Signup(props) {
 
     const onFinish = values => {
         console.log('Received values of form: ', values);
-        axios.post('http://localhost:8000/user/signup', values)
-            .then(res => {
-                console.log(res);
-                const data = res.data;
-                if (data.status) {
-                    toast.success("Registration successful", {autoClose: 3000});
-                    window.location = data.redirect;
-                } else {
-                    toast.error(data.message, {autoClose: 3000});
-                }
-            })
-            .catch(err => {
-                toast.error(err.message, {autoClose: 3000});
-            });
+        props.Register(values);
     };
     const [size] = useState(8);
     return (
@@ -109,4 +92,8 @@ function Signup() {
     );
 }
 
-export default Signup;
+const mapDispatchToProps = (dispatch) => ({
+    Register: (data) => dispatch(register(data))
+})
+
+export default connect(null,mapDispatchToProps)(Signup);
