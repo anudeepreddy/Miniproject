@@ -14,7 +14,7 @@ function EditorContent(props) {
     return (
         <ControlledEditor
             height="90vh"
-            theme='dark'
+            theme='light'
             language={props.language}
             onChange={handleChanges}
             value={code}

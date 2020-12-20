@@ -6,7 +6,6 @@ import languages from '../../languages';
 const {Panel} = Collapse;
 const {Option} = Select;
 const MemberCard = styled.div`
-background-color:#383838;
 display:flex;
 flex-direction:row;
 height:3em;

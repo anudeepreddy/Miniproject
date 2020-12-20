@@ -40,9 +40,9 @@ function HeaderComponent(props) {
                 <div className="logo"/>
                 <div style={{display: "flex"}}>
                     <Breadcrumb style={{alignSelf: "center"}}>
-                        <Breadcrumb.Item>{props.username}</Breadcrumb.Item>
+                        <Breadcrumb.Item style={{color:'white'}}>{props.username}</Breadcrumb.Item>
                         <Breadcrumb.Item overlay={workspaceMenu}
-                                         trigger={['click']}>{props.workspaceName}</Breadcrumb.Item>
+                                         trigger={['click']} style={{color: 'white'}}>{props.workspaceName}</Breadcrumb.Item>
                     </Breadcrumb>
                 </div>
                 <div className="userAvatar" style={{}}>
