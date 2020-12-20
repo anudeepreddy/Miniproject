@@ -1,25 +1,28 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom'
 import {Layout} from 'antd';
 import HeaderComponent from 'components/HeaderComponent';
 import HomeContent from 'components/home/HomeContent';
 import { connect } from 'react-redux';
 
 function Home(props) {
-    console.log(props.isLoggedIn);
-    if(props.isLoggedIn)
-    return (
-        <Layout>
-            <HeaderComponent username="Anudeep"/>
-            <HomeContent/>
-        </Layout>
-    );
-    else
-    return (
-        <div style={{textAlign: 'center'}}>
-        <h1>Login to Continue</h1>
-        <a  href="/login">Login Here!</a> 
-       </div>
-    );
+    
+    return  (
+        <> 
+        {
+            props.isLoggedIn?
+            (
+                <Layout>
+                    <HeaderComponent username="Anudeep"/>
+                    <HomeContent/>
+                </Layout>
+            ):
+            (
+                <Redirect to="/login"/>
+            )
+        }
+        </>
+    )
 }
 
 const mapStateToProps = (state) => ({
