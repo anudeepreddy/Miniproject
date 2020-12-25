@@ -34,8 +34,8 @@ export const login = (data) => async(dispatch,getState)=>{
         const data = res.data;
         console.log(data);
         if (data.status) {
-            localStorage.setItem(' token ', data.accessToken);
-            localStorage.setItem(' user ', jwtdecode(data.accessToken).username);
+            localStorage.setItem('token', data.accessToken);
+            localStorage.setItem('user', jwtdecode(data.accessToken).username);
             dispatch(loginUser(true));
             window.location = '/home';
         } else {
