@@ -34,7 +34,7 @@ function HeaderComponent(props) {
                 </div>
             </Header>
         );
-    } else if (location.pathname === '/workspace') {
+    } else if (location.pathname.split('/')[1] === 'workspace') {
         return (
             <Header style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <div className="logo"/>

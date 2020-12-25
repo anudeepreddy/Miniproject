@@ -2,6 +2,8 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 const keys = require("./config/keys");
 const authRoute = require("./controllers/auth");
+const workspaceRouter = require('./controllers/workspace');
+const {verifyToken} = require('./services/jwt');
 
 mongoose.connect(
   keys.mongoURI,
@@ -18,4 +20,7 @@ mongoose.connect(
 );
 
 router.use("/user", authRoute);
+router.use(verifyToken);
+router.use('/workspace',workspaceRouter);
+
 module.exports = router;

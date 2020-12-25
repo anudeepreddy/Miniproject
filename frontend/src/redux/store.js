@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {userRegister} from './user/register';
 import {userLogin} from './user/login';
+import {workspace} from './workspace';
 
 
 const persistConfig = {
@@ -14,6 +15,12 @@ const persistConfig = {
     stateReconciler: autoMergeLevel2
 }
 
-const rootReducer= combineReducers({userRegister,userLogin});
+const rootReducer= combineReducers(
+    {
+        userRegister,
+        userLogin,
+        workspace
+    }
+);
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store =  createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));

@@ -15,7 +15,7 @@ const PlusButton = styled.div`
   justify-content: center;
 `;
 
-function HomeContent() {
+function HomeContent(props) {
 
     const [modalState, setModalState] = useState(false);
     const [modalButtonLoading, setModalButtonLoading] = useState(false);
@@ -32,6 +32,7 @@ function HomeContent() {
     }
 
     function modalHandleOk() {
+        props.handleCreate({name:workspaceName,language:workspaceLang});
         setModalButtonLoading(true);
     }
 
@@ -40,8 +41,8 @@ function HomeContent() {
         setModalButtonLoading(false);
     }
 
-    function handleInputChange(value) {
-        setWorkspaceName(value);
+    function handleInputChange(e) {
+        setWorkspaceName(e.target.value);
     }
 
     function handleLanguageChange(value) {
@@ -49,7 +50,7 @@ function HomeContent() {
     }
 
     return (
-        <Content>
+        <Content style={{height: '100vh'}}>
             <Modal
                 title="Configure your workspace"
                 visible={modalState}
@@ -99,51 +100,19 @@ function HomeContent() {
                             <h4 style={{marginTop: '1em'}}>New Workspace</h4>
                         </Card>
                     </Col>
-                    <Col
-                        xs={{span: 24}}
-                        md={{span: 12}}
-                        lg={{span: 10}}
-                        xl={{span: 6}}
-                        xxl={{span: 6}}
-                    >
-                        <WorkspaceCard name="Hello world" lang="cpp"/>
-                    </Col>
-                    <Col
-                        xs={{span: 24}}
-                        md={{span: 12}}
-                        lg={{span: 10}}
-                        xl={{span: 6}}
-                        xxl={{span: 6}}
-                    >
-                        <WorkspaceCard name="Mark1" lang="node"/>
-                    </Col>
-                    <Col
-                        xs={{span: 24}}
-                        md={{span: 12}}
-                        lg={{span: 10}}
-                        xl={{span: 6}}
-                        xxl={{span: 6}}
-                    >
-                        <WorkspaceCard name="Mark1" lang="node"/>
-                    </Col>
-                    <Col
-                        xs={{span: 24}}
-                        md={{span: 12}}
-                        lg={{span: 10}}
-                        xl={{span: 6}}
-                        xxl={{span: 6}}
-                    >
-                        <WorkspaceCard name="Mark1" lang="node"/>
-                    </Col>
-                    <Col
-                        xs={{span: 24}}
-                        md={{span: 12}}
-                        lg={{span: 10}}
-                        xl={{span: 6}}
-                        xxl={{span: 6}}
-                    >
-                        <WorkspaceCard name="Mark1" lang="node"/>
-                    </Col>
+                    {
+                        props.workspaces.map((workspace)=>(
+                            <Col
+                                xs={{span: 24}}
+                                md={{span: 12}}
+                                lg={{span: 10}}
+                                xl={{span: 6}}
+                                xxl={{span: 6}}
+                            >
+                                <WorkspaceCard name={workspace.name} lang={workspace.language} id={workspace._id}/>
+                            </Col>
+                        ))
+                    }
                 </Row>
             </DashboardWrapper>
         </Content>

@@ -23,5 +23,5 @@ exports.verifyToken = (req, res, next) => {
             next();
         });
     } else
-        req.json({status: false, message: 'No Token Found'})
+        res.json({status: false, message: 'No Token Found'})
 }
