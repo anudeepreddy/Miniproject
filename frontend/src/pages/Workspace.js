@@ -1,30 +1,58 @@
-import React from 'react';
-import {Redirect} from 'react-router-dom';
+import React, { useEffect } from 'react';
+import {Redirect, useParams} from 'react-router-dom';
 import {Col, Layout, Row} from 'antd';
 import HeaderComponent from 'components/HeaderComponent';
 import WorkspaceSidebar from 'components/workspace/WorkspaceSidebar';
 import WorkspaceContent from 'components/workspace/WorkspaceContent';
 import { connect } from 'react-redux';
-import {toast} from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+import socketIOClient from "socket.io-client";
+import {fetchWorkspace} from '../redux/workspace';
 
 const {Content} = Layout;
 
 function Workspace(props) {
+    const {id} = useParams();
+
+    useEffect(()=>{
+        props.fetchWorkspace(id)
+    },[])
+
+    useEffect(()=>{
+        const token = localStorage.getItem('token');
+        const socket = socketIOClient('',{
+            extraHeaders: {
+              'x-auth-token': token
+            },
+            transportOptions: {
+              polling: {
+                extraHeaders: {
+                  'x-auth-token': token
+                }
+              }
+            },
+          }
+        );
+
+        socket.on('server-hello', data => {
+            console.log(data);
+        });
+
+    }, []);
+
     return (
         <>
             {
                 props.isLoggedIn?
                 (
                     <Layout>
-                        <HeaderComponent username="Anudeep" workspaceName="mark1"/>
+                        <HeaderComponent username={props.workspace?.owner.username} workspaceName={props.workspace?.name}/>
                         <Content>
                             <Row>
                                 <Col span={19}>
-                                    <WorkspaceContent language='javascript'/>
+                                    <WorkspaceContent language={props.workspace?.language}/>
                                 </Col>
                                 <Col span={5}>
-                                    <WorkspaceSidebar language={{name: "C++", value: "cpp"}}/>
+                                    <WorkspaceSidebar language={{name: "C++", value: "cpp"}} sharing={props.workspace?.sharing}/>
                                 </Col>
                             </Row>
                         </Content>
@@ -40,7 +68,12 @@ function Workspace(props) {
 
 
 const mapStateToProps = (state) => ({
-    isLoggedIn: state.userLogin.loggedIn
+    isLoggedIn: state.userLogin.loggedIn,
+    workspace: state.workspace.activeWorkspace
 })
 
-export default connect(mapStateToProps,null)(Workspace);
+const mapDispatchToProps = (dispatch) => ({
+    fetchWorkspace: (id) => dispatch(fetchWorkspace(id))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Workspace);

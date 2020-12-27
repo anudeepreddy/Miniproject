@@ -38,7 +38,7 @@ function WorkspaceSidebar(props) {
                 }}
             >
                 <p>Public:</p>
-                <Switch defaultChecked={false}/>
+                <Switch defaultChecked={props.sharing}/>
             </div>
             <div>
                 <p>Add Members:</p>

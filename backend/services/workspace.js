@@ -28,3 +28,20 @@ exports.fetchUserWorkspaces = async(user) => {
     })
   })
 }
+
+exports.fetchWorkspace = async(id, user) => {
+  return new Promise((resolve, reject)=>{
+    workspaceModel.findOne({_id: id}).populate('owner','username')
+    .exec((err,data)=>{
+      if(err){
+        reject(err);
+        return;
+      }
+      if(user!=data.owner._id && !data.collaborators.includes(user)){
+        reject(new Error("Unauthorized Access"));
+        return;
+      }
+      resolve(data);
+    });
+  })
+}

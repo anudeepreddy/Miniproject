@@ -4,9 +4,9 @@ import {Avatar, Breadcrumb, Button, Dropdown, Layout, Menu} from 'antd';
 
 const {Header} = Layout;
 
-const userMenu = (
+const UserMenu = (props) => (
     <Menu style={{width: 200, padding: '16px 24px'}}>
-        <h4>Anudeep</h4>
+        <h4>{props.username}</h4>
         <Button type="primary" style={{marginTop: '10px'}}>
             Logout
         </Button>
@@ -46,7 +46,7 @@ function HeaderComponent(props) {
                     </Breadcrumb>
                 </div>
                 <div className="userAvatar" style={{}}>
-                    <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
+                    <Dropdown overlay={<UserMenu username={props.username}/>} placement="bottomRight" trigger={['click']}>
                         <Avatar style={{color: '#f56a00', backgroundColor: '#fde3cf'}}>
                             {props.username[0].toUpperCase()}
                         </Avatar>
