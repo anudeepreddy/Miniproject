@@ -36,6 +36,9 @@ function Workspace(props) {
         socket.on('server-hello', data => {
             console.log(data);
         });
+        socket.on('joined', data => {
+            console.log(data);
+        });
 
     }, []);
 
@@ -45,7 +48,7 @@ function Workspace(props) {
                 props.isLoggedIn?
                 (
                     <Layout>
-                        <HeaderComponent username={props.workspace?.owner.username} workspaceName={props.workspace?.name}/>
+                        <HeaderComponent username={"Anudeep"} workspaceName={props.workspace?.name}/>
                         <Content>
                             <Row>
                                 <Col span={19}>

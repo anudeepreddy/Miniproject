@@ -26,7 +26,7 @@ function HeaderComponent(props) {
             <Header>
                 <div className="logo"/>
                 <div className="userAvatar" style={{float: 'right'}}>
-                    <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
+                    <Dropdown overlay={UserMenu} placement="bottomRight" trigger={['click']}>
                         <Avatar style={{color: '#f56a00', backgroundColor: '#fde3cf'}}>
                             {props.username[0].toUpperCase()}
                         </Avatar>
