@@ -21,7 +21,7 @@ const workspaceMenu = (
 
 function HeaderComponent(props) {
     const location = useLocation();
-    if (location.pathname === '/home') {
+    if (location.pathname === '/a/home') {
         return (
             <Header>
                 <div className="logo"/>
@@ -34,7 +34,7 @@ function HeaderComponent(props) {
                 </div>
             </Header>
         );
-    } else if (location.pathname.split('/')[1] === 'workspace') {
+    } else if (location.pathname.split('/')[2] === 'workspace') {
         return (
             <Header style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <div className="logo"/>

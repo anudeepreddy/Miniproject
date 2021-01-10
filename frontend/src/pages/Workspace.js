@@ -1,41 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {Redirect, useParams} from 'react-router-dom';
 import {Col, Layout, Row} from 'antd';
 import HeaderComponent from 'components/HeaderComponent';
 import WorkspaceSidebar from 'components/workspace/WorkspaceSidebar';
 import WorkspaceContent from 'components/workspace/WorkspaceContent';
 import { connect } from 'react-redux';
-import socketIOClient from "socket.io-client";
 import {fetchWorkspace} from '../redux/workspace';
+import SocketContext from '../components/SocketContext';
 
 const {Content} = Layout;
 
 function Workspace(props) {
     const {id} = useParams();
 
+    const socket = useContext(SocketContext);
+
     useEffect(()=>{
         props.fetchWorkspace(id)
     },[])
 
     useEffect(()=>{
-        const token = localStorage.getItem('token');
-        const socket = socketIOClient('',{
-            extraHeaders: {
-              'x-auth-token': token
-            },
-            transportOptions: {
-              polling: {
-                extraHeaders: {
-                  'x-auth-token': token
-                }
-              }
-            },
-          }
-        );
-
         socket.on('server-hello', data => {
             console.log(data);
         });
+        
+        socket.emit('join-room',id);
+
         socket.on('joined', data => {
             console.log(data);
         });

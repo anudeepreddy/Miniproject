@@ -37,7 +37,7 @@ export const login = (data) => async(dispatch,getState)=>{
             localStorage.setItem('token', data.accessToken);
             localStorage.setItem('user', jwtdecode(data.accessToken).username);
             dispatch(loginUser(true));
-            window.location = '/home';
+            window.location = '/a/home';
         } else {
             dispatch(loginUser(false));
             toast.warn(data.message, {autoClose: 3000});

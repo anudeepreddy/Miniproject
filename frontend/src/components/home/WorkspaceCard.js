@@ -53,7 +53,7 @@ function WorkspaceCard(props) {
                         <LanguageIcon lang={lang}/>
                         <h4>{name}</h4>
                     </Col>
-                    <Link to={`/workspace/${id}`}>
+                    <Link to={`/a/workspace/${id}`}>
                         <i class="fas fa-3x fa-arrow-circle-right"></i>
                     </Link>                        
                 </Row>
