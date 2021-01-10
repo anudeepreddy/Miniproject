@@ -8,6 +8,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server, {});
 const socketJwtAuth = require('socketio-jwt-auth');
 const UserModel = require('./backend/models/user');
+const initListeners= require('./backend/sockets');
 
 app.use(bodyParser.json());
 
@@ -36,8 +37,6 @@ io.use(socketJwtAuth.authenticate({
   )
 );
 
-io.on('connection', socket => {
-  socket.emit('server-hello',`Hello ${socket.request.user.username}`);
-});
+initListeners(io);
 
 server.listen(keys.port);
