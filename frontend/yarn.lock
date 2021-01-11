@@ -1153,6 +1153,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@convergencelabs/monaco-collab-ext@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@convergencelabs/monaco-collab-ext/-/monaco-collab-ext-0.3.1.tgz#4cf114a9dd00bd2eabf07f33d98845445b89057a"
+  integrity sha512-lbRwHgnLm8MfbdKHlzcX/+VMZpy+cW6Coh3a0NSGqKeBn7QaSs88mxeeKsWLBEoMZ0xKz4X6uax5KEj6sS7BlA==
+  dependencies:
+    monaco-editor ">=0.15.6 <=0.21.x"
+
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
@@ -7184,6 +7191,11 @@ monaco-editor@*:
   version "0.20.0"
   resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.20.0.tgz#5d5009343a550124426cb4d965a4d27a348b4dea"
   integrity sha512-hkvf4EtPJRMQlPC3UbMoRs0vTAFAYdzFQ+gpMb8A+9znae1c43q8Mab9iVsgTcg/4PNiLGGn3SlDIa8uvK1FIQ==
+
+"monaco-editor@>=0.15.6 <=0.21.x":
+  version "0.21.2"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.21.2.tgz#37054e63e480d51a2dd17d609dcfb192304d5605"
+  integrity sha512-jS51RLuzMaoJpYbu7F6TPuWpnWTLD4kjRW0+AZzcryvbxrTwhNy1KC9yboyKpgMTahpUbDUsuQULoo0GV1EPqg==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
