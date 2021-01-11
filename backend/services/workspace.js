@@ -16,7 +16,7 @@ exports.createWorkspace = async(data) => {
 
 exports.fetchUserWorkspaces = async(user) => {
   return new Promise((resolve, reject)=>{
-    workspaceModel.find({owner: user})
+    workspaceModel.find(/*{owner: user}*/)
     .sort({createdDate:-1})
     .select({name:1,language:1})
     .exec((err,data)=>{
@@ -37,10 +37,10 @@ exports.fetchWorkspace = async(id, user) => {
         reject(err);
         return;
       }
-      if(user!=data.owner._id && !data.collaborators.includes(user)){
-        reject(new Error("Unauthorized Access"));
-        return;
-      }
+      // if(user!=data.owner._id && !data.collaborators.includes(user)){
+      //   reject(new Error("Unauthorized Access"));
+      //   return;
+      // }
       resolve(data);
     });
   })
