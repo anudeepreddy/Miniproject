@@ -42,7 +42,7 @@ function Workspace(props) {
                         <Content>
                             <Row>
                                 <Col span={19}>
-                                    <WorkspaceContent language={props.workspace?.language}/>
+                                    <WorkspaceContent language={props.workspace?.language} socket={socket} roomId={id}/>
                                 </Col>
                                 <Col span={5}>
                                     <WorkspaceSidebar language={{name: "C++", value: "cpp"}} sharing={props.workspace?.sharing}/>
