@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import {Redirect, useParams} from 'react-router-dom';
 import {Col, Layout, Row} from 'antd';
 import HeaderComponent from 'components/HeaderComponent';
@@ -13,6 +13,10 @@ const {Content} = Layout;
 function Workspace(props) {
     const {id} = useParams();
 
+    const [joinedRoom, setJoinedRoom] = useState(false);
+
+    const username = localStorage.getItem('user');
+
     const socket = useContext(SocketContext);
 
     useEffect(()=>{
@@ -21,6 +25,7 @@ function Workspace(props) {
 
     useEffect(()=>{
         socket.on('server-hello', data => {
+            setJoinedRoom(true);
             console.log(data);
         });
         
@@ -38,11 +43,11 @@ function Workspace(props) {
                 props.isLoggedIn?
                 (
                     <Layout>
-                        <HeaderComponent username={"Anudeep"} workspaceName={props.workspace?.name}/>
+                        <HeaderComponent username={username} workspaceOwner={props.workspace?.owner.username} workspaceName={props.workspace?.name}/>
                         <Content>
                             <Row>
                                 <Col span={19}>
-                                    <WorkspaceContent language={props.workspace?.language} socket={socket} roomId={id}/>
+                                    <WorkspaceContent language={props.workspace?.language} socket={socket} roomId={id} isOwner={props.workspace.isOwner} joinedRoom={joinedRoom}/>
                                 </Col>
                                 <Col span={5}>
                                     <WorkspaceSidebar language={{name: "C++", value: "cpp"}} sharing={props.workspace?.sharing}/>

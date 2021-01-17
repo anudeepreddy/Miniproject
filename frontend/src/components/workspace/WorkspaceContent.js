@@ -13,6 +13,8 @@ function EditorContent(props) {
   const remoteCursorManager = useRef();
   const [isMounted, setIsMounted] = useState(false);
   const [code, setCode] = useState("//Type your code here...");
+  let startSync = false;
+  let endSync = false;
   const username = localStorage.getItem("user");
   let sourceUserCursor;
   let guestCursors = {};
@@ -20,16 +22,30 @@ function EditorContent(props) {
     //console.log(ev);
   };
 
+  useEffect(()=>{
+    console.log(props.joinedRoom);
+    if(!startSync&&!props.isOwner&&props.joinedRoom){
+      console.log(props.joinedRoom);
+      console.log("we are starting sync"+props.roomId);
+      props.socket.emit('startSyncCode',{roomId:props.roomId});
+      startSync = true;
+    }
+  },[props.joinedRoom])
+
   useEffect(() => {
+    
     if (isMounted) {
-      props.socket.on("editorInsert", ({ index, text }) =>
-        editorContentManager.current.insert(index, text)
+      props.socket.on("editorInsert", ({ index, text }) =>{
+      console.log("Insert", index, text);
+        editorContentManager.current.insert(index, text)}
       );
-      props.socket.on("editorReplace", ({ index, length, text }) =>
-        editorContentManager.current.replace(index, length, text)
+      props.socket.on("editorReplace", ({ index, length, text }) =>{
+      console.log("Replace", index, length, text);
+        editorContentManager.current.replace(index, length, text)}
       );
-      props.socket.on("editorDelete", ({ index, length }) =>
-        editorContentManager.current.delete(index, length)
+      props.socket.on("editorDelete", ({ index, length }) =>{
+      console.log("Delete", index, length);
+        editorContentManager.current.delete(index, length)}
       );
       props.socket.on("users-list", (users) => {
         createCursors(users);
@@ -45,7 +61,25 @@ function EditorContent(props) {
         }
         guestCursors[user].setPosition(position);
       });
+
     }
+    
+    if(props.isOwner){
+      props.socket.on('startSyncCode',()=>{
+        console.log("Owner send data");
+        console.log(editorRef.current.getValue());
+        props.socket.emit('endSyncCode',{roomId:props.roomId, code:editorRef.current.getValue()});
+      });
+    }
+
+    props.socket.on('endSyncCode',(data)=>{
+      //console.log(code);
+      console.log("we are starting sync");
+      if(!endSync){
+        editorContentManager.current.replace(0,code.length,data.code);
+        endSync = true;
+      }
+    })
   }, [isMounted]);
 
   function createCursors(users) {
@@ -84,6 +118,8 @@ function EditorContent(props) {
       username
     );
 
+    sourceUserCursor.setOffset(0)
+
     props.socket.emit("fetch-users", props.roomId);
 
     editorContentManager.current = new EditorContentManager({
@@ -94,7 +130,7 @@ function EditorContent(props) {
           index,
           text,
         });
-        console.log("Insert", index, text.charCodeAt(0));
+        console.log("Insert", index, text);
       },
       onReplace(index, length, text) {
         props.socket.emit("editorOnReplace", {
@@ -103,7 +139,7 @@ function EditorContent(props) {
           length,
           text,
         });
-        //console.log("Replace", index, length, text);
+        console.log("Replace", index, length, text);
       },
       onDelete(index, length) {
         props.socket.emit("editorOnDelete", {
@@ -111,7 +147,7 @@ function EditorContent(props) {
           index,
           length,
         });
-        //console.log("Delete", index, length);
+        console.log("Delete", index, length);
       },
     });
 

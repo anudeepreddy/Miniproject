@@ -9,9 +9,24 @@ module.exports = (io) => {
       editorListeners(socket);
       sendUsersList(io, socket);
       updateCursor(socket);
+      syncCode(socket);
     });
   });
 };
+
+function syncCode(socket){
+  socket.on('startSyncCode',({roomId})=>{
+    console.log("we are here");
+    socket.broadcast
+      .to(roomId)
+      .emit('startSyncCode',"");
+  })
+  socket.on('endSyncCode',({roomId,code})=>{
+    socket.broadcast
+      .to(roomId)
+      .emit('endSyncCode',{code});
+  })
+}
 
 function sendUsersList(io, socket) {
   socket.on("fetch-users", (roomId) => {
