@@ -1,4 +1,5 @@
 const workspaceModel = require('../models/workspace');
+const axios = require('axios')
 
 exports.createWorkspace = async(data) => {
   const {name,language,owner} = data;
@@ -44,4 +45,14 @@ exports.fetchWorkspace = async(id, user) => {
       resolve(data);
     });
   })
+}
+
+exports.runCode = async(data)=>{
+
+    return new Promise((resolve,reject)=>
+    axios.post('https://rextester.com/rundotnet/api',data).then(res=>{
+      //console.log(res.data);
+        resolve(res.data);
+    }).catch(err=>reject(err))
+    );
 }

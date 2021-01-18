@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {createWorkspace, fetchUserWorkspaces, fetchWorkspace} = require('../services/workspace');
+const {createWorkspace, fetchUserWorkspaces, fetchWorkspace, runCode} = require('../services/workspace');
 
 router.post('/new', async (req,res)=>{
   const data = req.body;
@@ -35,6 +35,17 @@ router.get('/:id', async(req, res)=>{
     }
     res.status(500).send({status: false, message: 'Internal Server Error'})
   }
+})
+
+router.post('/run',async(req,res)=>{
+   try{
+     const data=await runCode(req.body);
+     console.log(data);
+     res.send({status:true,data});
+   }
+   catch(err){
+    res.status(500).send({status: false, message: 'Internal Server Error'})
+   }
 })
 
 module.exports = router;

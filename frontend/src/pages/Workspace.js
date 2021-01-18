@@ -4,8 +4,8 @@ import {Col, Layout, Row} from 'antd';
 import HeaderComponent from 'components/HeaderComponent';
 import WorkspaceSidebar from 'components/workspace/WorkspaceSidebar';
 import WorkspaceContent from 'components/workspace/WorkspaceContent';
-import { connect } from 'react-redux';
-import {fetchWorkspace} from '../redux/workspace';
+import { connect } from 'react-redux'; 
+import {fetchWorkspace,runCode} from '../redux/workspace';
 import SocketContext from '../components/SocketContext';
 
 const {Content} = Layout;
@@ -42,7 +42,8 @@ function Workspace(props) {
                         <Content>
                             <Row>
                                 <Col span={19}>
-                                    <WorkspaceContent language={props.workspace?.language} socket={socket} roomId={id}/>
+                                    <WorkspaceContent language={props.workspace?.language} socket={socket} roomId={id}
+                                     handleRun={props.runCode} output={props.output}/>
                                 </Col>
                                 <Col span={5}>
                                     <WorkspaceSidebar language={{name: "C++", value: "cpp"}} sharing={props.workspace?.sharing}/>
@@ -62,11 +63,13 @@ function Workspace(props) {
 
 const mapStateToProps = (state) => ({
     isLoggedIn: state.userLogin.loggedIn,
-    workspace: state.workspace.activeWorkspace
+    workspace: state.workspace.activeWorkspace,
+    output: state.workspace.output
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchWorkspace: (id) => dispatch(fetchWorkspace(id))
+    fetchWorkspace: (id) => dispatch(fetchWorkspace(id)),
+    runCode: (data) => dispatch(runCode(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Workspace);

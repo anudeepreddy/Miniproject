@@ -1,9 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
+import { connect } from 'react-redux';
 import { ControlledEditor } from "@monaco-editor/react";
 import {
   EditorContentManager,
   RemoteCursorManager,
 } from "@convergencelabs/monaco-collab-ext";
+import { Input,Button,Row,Col } from 'antd';
+import LanguageCode from "./LanguageCode";
+
+const { TextArea } = Input;
 
 const colors = ["red", "green", "blue", "orange", "yellow"];
 
@@ -13,12 +18,22 @@ function EditorContent(props) {
   const remoteCursorManager = useRef();
   const [isMounted, setIsMounted] = useState(false);
   const [code, setCode] = useState("//Type your code here...");
+  const [input,setInput]=useState("");
+  //const [output,setOutput]=useState("");
   const username = localStorage.getItem("user");
   let sourceUserCursor;
   let guestCursors = {};
-  const handleChanges = (ev) => {
-    //console.log(ev);
+  const handleChanges = (ev,val) => {
+    setCode(val);
   };
+
+  function handleInputChange(e) {
+    setInput(e.target.value);
+  }
+
+  function handleClick(){
+    props.handleRun({Program:code,LanguageChoice:LanguageCode(props.language),Input:input});
+  }
 
   useEffect(() => {
     if (isMounted) {
@@ -62,7 +77,6 @@ function EditorContent(props) {
 
   const handleEditorMount = (_, editor) => {
     editorRef.current = editor;
-
     editorRef.current.onDidChangeCursorPosition((e) => {
       sourceUserCursor.setPosition(e.position);
       props.socket.emit("update-cursor", {
@@ -119,6 +133,7 @@ function EditorContent(props) {
   };
 
   return (
+    <>
     <ControlledEditor
       editorDidMount={handleEditorMount}
       height="90vh"
@@ -127,7 +142,23 @@ function EditorContent(props) {
       onChange={handleChanges}
       value={code}
     />
+    <Row>
+      <Col span={11}>
+        <h3>INPUT</h3>
+        <TextArea id="input" placeholder="Enter the input to be provided" onChange={handleInputChange} allowClear rows={4} />
+      </Col>
+      <Col span={1}></Col>
+      <Col span={11}>
+        <div style={{display:'flex'}}>
+          <h3 style={{marginRight:'10em'}} >OUTPUT</h3>
+          <Button type="primary" onClick={handleClick}>RUN</Button>
+        </div>
+        <h5>{JSON.stringify(props.output)}</h5>
+      </Col>
+    </Row>
+  </>
   );
 }
+
 
 export default EditorContent;

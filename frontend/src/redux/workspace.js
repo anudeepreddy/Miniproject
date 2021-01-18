@@ -3,6 +3,7 @@ import {toast} from 'react-toastify';
 
 export const SET_WORKSPACES = "SET_WORKSPACES";
 export const SET_ACTIVE_WORKSPACE = "SET_ACTIVE_WORKSPACE";
+export const SET_OUTPUT = "SET_OUTPUT"
 
 export const setWorkspaces = (workspaces) => ({
     type: SET_WORKSPACES,
@@ -14,9 +15,15 @@ export const setActiveWorkspace = (data) => ({
     payload: data
 })
 
+export const setOutput = (data) =>({
+    type: SET_OUTPUT,
+    payload: data
+})
+
 const initialState = {
     workspaces: [],
-    activeWorkspace: null
+    activeWorkspace: null,
+    output: ""
 }
 
 export const workspace = (state=initialState,action)=>{
@@ -30,6 +37,12 @@ export const workspace = (state=initialState,action)=>{
         }
         case SET_ACTIVE_WORKSPACE: {
             return{...state,activeWorkspace:payload}
+        }
+        case SET_OUTPUT: {
+            return{
+                ...state,
+                output:payload
+            }
         }
         default : return state;
     }
@@ -68,4 +81,17 @@ export const fetchWorkspace = (id) => async(dispatch, getState) => {
             console.log(data.message);
         }
     }).catch(console.log);
+}
+
+export const runCode= (data) => async(dispatch,getState)=>{
+    axios.post('/api/workspace/run',data).then(response=>{
+        let data = response.data;
+        if(data.status){
+            dispatch(setOutput(data.data));
+        }
+        else{
+            console.log(data.message);
+        }
+    })
+     .catch(err=>{console.log(err)});
 }
