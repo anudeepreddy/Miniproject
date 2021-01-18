@@ -38,10 +38,12 @@ exports.fetchWorkspace = async(id, user) => {
         reject(err);
         return;
       }
+      data = data.toJSON();
       // if(user!=data.owner._id && !data.collaborators.includes(user)){
       //   reject(new Error("Unauthorized Access"));
       //   return;
       // }
+      data.isOwner = user==data.owner._id?true:false; 
       resolve(data);
     });
   })
