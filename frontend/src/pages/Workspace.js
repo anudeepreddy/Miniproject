@@ -47,8 +47,7 @@ function Workspace(props) {
                         <Content>
                             <Row>
                                 <Col span={19}>
-                                    <WorkspaceContent language={props.workspace?.language} socket={socket} roomId={id} isOwner={props.workspace.isOwner} joinedRoom={joinedRoom}
-                                    handleRun={props.runCode} output={props.output}/>
+                                    <WorkspaceContent language={props.workspace?.language} socket={socket} roomId={id} isOwner={props.workspace.isOwner} joinedRoom={joinedRoom}/>
                                 </Col>
                                 <Col span={5}>
                                     <WorkspaceSidebar language={{name: "C++", value: "cpp"}} sharing={props.workspace?.sharing}/>
@@ -73,8 +72,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchWorkspace: (id) => dispatch(fetchWorkspace(id)),
-    runCode: (data) => dispatch(runCode(data))
+    fetchWorkspace: (id) => dispatch(fetchWorkspace(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Workspace);

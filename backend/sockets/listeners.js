@@ -1,3 +1,5 @@
+const { default: axios } = require("axios");
+
 module.exports = (io) => {
   io.on("connection", (socket) => {
     socket.emit("server-hello", `Hello ${socket.request.user.username}`);
@@ -10,6 +12,7 @@ module.exports = (io) => {
       sendUsersList(io, socket);
       updateCursor(socket);
       syncCode(socket);
+      runCode(io,socket);
     });
   });
 };
@@ -58,4 +61,14 @@ function editorListeners(socket) {
   socket.on("editorOnDelete", ({ roomId, index, length }) => {
     socket.broadcast.to(roomId).emit("editorDelete", { index, length });
   });
+}
+
+function runCode(io,socket){
+  socket.on("runCode",({roomId,Program,LanguageChoice,Input})=>{
+    data={Program,LanguageChoice,Input}
+    axios.post('https://rextester.com/rundotnet/api',data).then(res=>{
+      console.log(res.data);
+      io.in(roomId).emit("output",res.data);
+    })
+  })
 }

@@ -37,15 +37,4 @@ router.get('/:id', async(req, res)=>{
   }
 })
 
-router.post('/run',async(req,res)=>{
-   try{
-     const data=await runCode(req.body);
-     console.log(data);
-     res.send({status:true,data});
-   }
-   catch(err){
-    res.status(500).send({status: false, message: 'Internal Server Error'})
-   }
-})
-
 module.exports = router;

@@ -19,12 +19,12 @@ function EditorContent(props) {
   const [isMounted, setIsMounted] = useState(false);
   const [code, setCode] = useState("//Type your code here...");
   const [input,setInput]=useState("");
-  //const [output,setOutput]=useState("");
   let startSync = false;
   let endSync = false;
   const username = localStorage.getItem("user");
   let sourceUserCursor;
   let guestCursors = {};
+
   const handleChanges = (ev,val) => {
     setCode(val);
   };
@@ -34,8 +34,10 @@ function EditorContent(props) {
   }
 
   function handleClick(){
-    props.handleRun({Program:code,LanguageChoice:LanguageCode(props.language),Input:input});
+    props.socket.emit('runCode',{roomId:props.roomId,Program:code,LanguageChoice:LanguageCode(props.language),Input:input});
   }
+
+
   useEffect(()=>{
     console.log(props.joinedRoom);
     if(!startSync&&!props.isOwner&&props.joinedRoom){
@@ -94,7 +96,13 @@ function EditorContent(props) {
         endSync = true;
       }
     })
+
+    props.socket.on('output',(output)=>{
+      console.log(output);
+    })
   }, [isMounted]);
+
+
 
   function createCursors(users) {
     users.map((user) => {
