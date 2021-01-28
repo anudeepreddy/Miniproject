@@ -63,9 +63,14 @@ function editorListeners(socket) {
   });
 }
 
+const compilerArgs = {
+  '6': '-o a.out source_file.c',
+  '7': '-o a.out source_file.c'
+}
+
 function runCode(io,socket){
   socket.on("runCode",({roomId,Program,LanguageChoice,Input})=>{
-    data={Program,LanguageChoice,Input}
+    data={Program,LanguageChoice,Input,CompilerArgs:compilerArgs[LanguageChoice]}
     axios.post('https://rextester.com/rundotnet/api',data).then(res=>{
       console.log(res.data);
       io.in(roomId).emit("output",res.data);

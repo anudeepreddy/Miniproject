@@ -26,7 +26,7 @@ function EditorContent(props) {
   let guestCursors = {};
 
   const handleChanges = (ev,val) => {
-    setCode(val);
+    props.setCode(val);
   };
 
   function handleInputChange(e) {
@@ -34,7 +34,7 @@ function EditorContent(props) {
   }
 
   function handleClick(){
-    props.socket.emit('runCode',{roomId:props.roomId,Program:code,LanguageChoice:LanguageCode(props.language),Input:input});
+    props.socket.emit('runCode',{roomId:props.roomId,Program:editorRef.current.getValue(),LanguageChoice:LanguageCode(props.language),Input:input});
   }
 
 
@@ -133,7 +133,7 @@ function EditorContent(props) {
       tooltipDuration: 2,
     });
 
-    sourceUserCursor = remoteCursorManager.current.addCursor(
+    sourceUserCursor = new RemoteCursorManager({editor:editor,tooltips:false}).addCursor(
       username,
       "black",
       username
@@ -185,7 +185,7 @@ function EditorContent(props) {
       onChange={handleChanges}
       value={code}
     />
-    <Row>
+    {/* <Row>
       <Col span={11}>
         <h3>INPUT</h3>
         <TextArea id="input" placeholder="Enter the input to be provided" onChange={handleInputChange} allowClear rows={4} />
@@ -198,7 +198,7 @@ function EditorContent(props) {
         </div>
         <h5>{JSON.stringify(props.output)}</h5>
       </Col>
-    </Row>
+    </Row> */}
   </>
   );
 }

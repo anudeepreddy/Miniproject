@@ -27,14 +27,23 @@ const Col = styled.div`
     display: Block
 `
 
-const optionsMenu = (
-    <Menu>
-        <Button type="primary" danger>Delete</Button>
-    </Menu>
-)
-
 function WorkspaceCard(props) {
+
     const {name, lang, id} = props;
+
+
+
+    const optionsMenu = (
+        <Menu>
+            <Menu.Item onClick={()=>props.configureWorkspace(id)}>
+                Configure
+            </Menu.Item>
+            <Menu.Item danger>
+                Delete
+            </Menu.Item>
+        </Menu>
+    )
+
     return (
         <Card style={{height: '10em', width: '20em'}}>
             <Options>

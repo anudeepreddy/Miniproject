@@ -1,8 +1,9 @@
-import React from 'react';
-import {Avatar, Card, Collapse, Divider, Select, Switch} from 'antd';
+import React, {useState} from 'react';
+import {Input, Avatar, Card, Collapse, Divider, Select, Switch, Button} from 'antd';
 import styled from 'styled-components';
 import languages from '../../languages';
 
+const {TextArea} = Input;
 const {Panel} = Collapse;
 const {Option} = Select;
 const MemberCard = styled.div`
@@ -17,19 +18,29 @@ padding:0 1em;
 
 function WorkspaceSidebar(props) {
 
+    function getLanguage(id){
+        for(let i=0;i<languages.length;i++){
+            if(id==languages[i].value){
+                console.log(languages[i])
+                return languages[i]
+            }
+        }
+    }
+    
+    const [input, SetInput] = useState();
     return (
         <Card style={{minHeight: 'calc(100vh - 64px)'}}>
             <Divider>Language</Divider>
             <Select
                 style={{width: "18em"}}
                 placeholder="Select a Language"
-                defaultValue={props.language.value}
+                value={props.language}
             >
                 {languages.map((language) => (
                     <Option value={language.value}>{language.name}</Option>
                 ))}
             </Select>
-            <Divider>Sharing</Divider>
+            {/* <Divider>Sharing</Divider>
             <div
                 style={{
                     display: 'flex',
@@ -43,7 +54,7 @@ function WorkspaceSidebar(props) {
             <div>
                 <p>Add Members:</p>
                 <Select showSearch style={{width: "18em"}}></Select>
-            </div>
+            </div> */}
             <Divider>Members</Divider>
             <div>
                 <MemberCard>
@@ -79,6 +90,17 @@ function WorkspaceSidebar(props) {
                     </Avatar>
                     <h4 style={{marginLeft: "1em"}}>Lokesh</h4>
                 </MemberCard>
+            </div>
+            <Divider>Run</Divider>
+            <h3>Input</h3>
+            <TextArea id="input" 
+                placeholder="Enter the input to be provided" 
+                onChange={(e)=>SetInput(e.target.value)} 
+                allowClear 
+                rows={4} 
+            />
+            <div style={{display:'flex', flexDirection:'row-reverse', marginTop:'1em'}}>
+                <Button type="primary" onClick={()=>props.runCode(input)}>Run</Button>
             </div>
         </Card>
     );

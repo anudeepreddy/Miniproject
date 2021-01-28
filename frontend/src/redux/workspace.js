@@ -61,6 +61,7 @@ export const fetchWorkspaces = () => async(dispatch,getState)=>{
 }
 
 export const fetchWorkspace = (id) => async(dispatch, getState) => {
+    console.log("we are here")
     axios.get(`/api/workspace/${id}`).then(response => {
         let data = response.data;
         if(data.status){

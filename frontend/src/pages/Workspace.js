@@ -4,8 +4,9 @@ import {Col, Layout, Row} from 'antd';
 import HeaderComponent from 'components/HeaderComponent';
 import WorkspaceSidebar from 'components/workspace/WorkspaceSidebar';
 import WorkspaceContent from 'components/workspace/WorkspaceContent';
+import LanguageCode from "components/workspace/LanguageCode";
 import { connect } from 'react-redux'; 
-import {fetchWorkspace,runCode} from '../redux/workspace';
+import { fetchWorkspace } from '../redux/workspace';
 import SocketContext from '../components/SocketContext';
 
 const {Content} = Layout;
@@ -13,14 +14,27 @@ const {Content} = Layout;
 function Workspace(props) {
     const {id} = useParams();
 
+    const [code, setCode] = useState();
+
     const [joinedRoom, setJoinedRoom] = useState(false);
 
     const username = localStorage.getItem('user');
 
     const socket = useContext(SocketContext);
 
+    const RunCode = (input) => {
+        socket.emit('runCode',{
+                roomId: id,
+                Program: code,
+                LanguageChoice: LanguageCode(props.workspace?.language),
+                Input:input
+            }
+        );
+    }
+
     useEffect(()=>{
         props.fetchWorkspace(id)
+        socket.on('output',console.log);
     },[])
 
     useEffect(()=>{
@@ -47,10 +61,21 @@ function Workspace(props) {
                         <Content>
                             <Row>
                                 <Col span={19}>
-                                    <WorkspaceContent language={props.workspace?.language} socket={socket} roomId={id} isOwner={props.workspace.isOwner} joinedRoom={joinedRoom}/>
+                                    <WorkspaceContent 
+                                        language={props.workspace?.language} 
+                                        socket={socket} 
+                                        roomId={id} 
+                                        isOwner={props.workspace?.isOwner} 
+                                        joinedRoom={joinedRoom}
+                                        setCode={setCode}
+                                    />
                                 </Col>
                                 <Col span={5}>
-                                    <WorkspaceSidebar language={{name: "C++", value: "cpp"}} sharing={props.workspace?.sharing}/>
+                                    <WorkspaceSidebar 
+                                        language={props.workspace?.language} 
+                                        sharing={props.workspace?.sharing}
+                                        runCode={RunCode}    
+                                    />
                                 </Col>
                             </Row>
                         </Content>

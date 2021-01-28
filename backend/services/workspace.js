@@ -17,9 +17,10 @@ exports.createWorkspace = async(data) => {
 
 exports.fetchUserWorkspaces = async(user) => {
   return new Promise((resolve, reject)=>{
-    workspaceModel.find(/*{owner: user}*/)
+    workspaceModel.find({owner: user})
     .sort({createdDate:-1})
-    .select({name:1,language:1})
+    .select({name:1,language:1,collaborators:1})
+    .populate('collaborators','username')
     .exec((err,data)=>{
       if(err){
         reject(err);

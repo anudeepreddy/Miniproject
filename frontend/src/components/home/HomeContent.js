@@ -109,7 +109,7 @@ function HomeContent(props) {
                                 xl={{span: 6}}
                                 xxl={{span: 6}}
                             >
-                                <WorkspaceCard name={workspace.name} lang={workspace.language} id={workspace._id}/>
+                                <WorkspaceCard name={workspace.name} lang={workspace.language} id={workspace._id} configureWorkspace={props.configureWorkspace}/>
                             </Col>
                         ))
                     }
