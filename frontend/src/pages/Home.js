@@ -33,6 +33,7 @@ function parseUser(data){
 }
 
 function Home(props) {
+    const loggedInUser = localStorage.getItem('user');
     const [visible,setVisible] = useState(false);
     const [loading,setLoading] = useState(false);
     const [fetching, setFetching] = useState(false);
@@ -137,14 +138,31 @@ function Home(props) {
         props.fetchWorkspaces();
     },[])
 
+    function createWorkspace(data){
+        return new Promise((resolve,reject)=>{
+            axios.post('/api/workspace/new',data).then(response => {
+                let data = response.data;
+                if(data.status){
+                    message.success("Workspace created Successfully")
+                    props.fetchWorkspaces();
+                }
+                else{
+                    message.error("Oops! something went wrong")
+                }
+                resolve();
+            }).catch(err=>{resolve();console.log(err)})
+        })
+        
+    }
+
     return  (
         <> 
             {
                 props.isLoggedIn?
                 (
                     <Layout>
-                        <HeaderComponent username="Anudeep"/>
-                        <HomeContent handleCreate={props.createWorkspace} workspaces={props.workspaces} configureWorkspace={configureWorkspace} deleteWorkspace={deleteWorkspace}/>
+                        <HeaderComponent username={loggedInUser}/>
+                        <HomeContent handleCreate={createWorkspace} workspaces={props.workspaces} configureWorkspace={configureWorkspace} deleteWorkspace={deleteWorkspace}/>
                         <Modal
                             visible={visible}
                             title="Configure"

@@ -82,6 +82,7 @@ function Workspace(props) {
                                 </Col>
                                 <Col span={5}>
                                     <WorkspaceSidebar 
+                                        collaborators={props.workspace.collaborators}
                                         language={props.workspace?.language} 
                                         sharing={props.workspace?.sharing}
                                         runCode={RunCode}

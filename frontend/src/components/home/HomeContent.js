@@ -32,7 +32,7 @@ function HomeContent(props) {
     }
 
     function modalHandleOk() {
-        props.handleCreate({name:workspaceName,language:workspaceLang});
+        props.handleCreate({name:workspaceName,language:workspaceLang}).then(()=>{setModalState(false);setModalButtonLoading(false);});
         setModalButtonLoading(true);
     }
 

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Input, Avatar, Card, Collapse, Divider, Select, Switch, Button} from 'antd';
 import styled from 'styled-components';
 import languages from '../../languages';
+import { workspace } from 'redux/workspace';
 
 const {TextArea} = Input;
 const {Panel} = Collapse;
@@ -40,56 +41,23 @@ function WorkspaceSidebar(props) {
                     <Option value={language.value}>{language.name}</Option>
                 ))}
             </Select>
-            {/* <Divider>Sharing</Divider>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <p>Public:</p>
-                <Switch defaultChecked={props.sharing}/>
-            </div>
-            <div>
-                <p>Add Members:</p>
-                <Select showSearch style={{width: "18em"}}></Select>
-            </div> */}
             <Divider>Members</Divider>
             <div>
-                <MemberCard>
-                    <Avatar
-                        style={{
-                            color: '#f56a00',
-                            backgroundColor: '#fde3cf',
-                        }}
-                    >
-                        A
-                    </Avatar>
-                    <h4 style={{marginLeft: "1em"}}>Anudeep</h4>
-                </MemberCard>
-                <MemberCard>
-                    <Avatar
-                        style={{
-                            color: '#f56a00',
-                            backgroundColor: '#fde3cf',
-                        }}
-                    >
-                        K
-                    </Avatar>
-                    <h4 style={{marginLeft: "1em"}}>Keerthi</h4>
-                </MemberCard>
-                <MemberCard>
-                    <Avatar
-                        style={{
-                            color: '#f56a00',
-                            backgroundColor: '#fde3cf',
-                        }}
-                    >
-                        L
-                    </Avatar>
-                    <h4 style={{marginLeft: "1em"}}>Lokesh</h4>
-                </MemberCard>
+                {props.collaborators?.length!=0?props.collaborators?.map((d)=>{
+                    return (
+                        <MemberCard>
+                            <Avatar
+                                style={{
+                                    color: '#f56a00',
+                                    backgroundColor: '#fde3cf',
+                                }}
+                            >
+                                {d.username[0].toUpperCase()}
+                            </Avatar>
+                            <h4 style={{marginLeft: "1em"}}>{d.username}</h4>
+                        </MemberCard>
+                    )
+                }):<p>No collaborators</p>}
             </div>
             <Divider>Run</Divider>
             <h3>Input</h3>

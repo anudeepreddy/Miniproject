@@ -33,14 +33,14 @@ exports.fetchUserWorkspaces = async(user) => {
 
 exports.fetchWorkspace = async(id, user) => {
   return new Promise((resolve, reject)=>{
-    workspaceModel.findOne({_id: id}).populate('owner','username')
+    workspaceModel.findOne({_id: id}).populate('owner','username').populate('collaborators','username')
     .exec((err,data)=>{
       if(err){
         reject(err);
         return;
       }
       data = data.toJSON();
-      if(user!=data.owner._id && !data.collaborators.includes(user)){
+      if(user!=data.owner._id && !isCollaborator(data.collaborators,user)){
         reject(new Error("Unauthorized Access"));
         return;
       }
@@ -48,6 +48,14 @@ exports.fetchWorkspace = async(id, user) => {
       resolve(data);
     });
   })
+}
+
+function isCollaborator(collaborators,user){
+  for(let i=0;i<collaborators.length;i++){
+    if(collaborators[i]._id==user)
+      return true;
+  }
+  return false;
 }
 
 exports.updateWorkspace = async(_id, collaborators, language, user) => {
