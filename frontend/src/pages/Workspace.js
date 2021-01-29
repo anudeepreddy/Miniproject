@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import {Redirect, useParams} from 'react-router-dom';
-import {Col, Layout, Row} from 'antd';
+import {Col, Layout, Row, Drawer, Alert} from 'antd';
 import HeaderComponent from 'components/HeaderComponent';
 import WorkspaceSidebar from 'components/workspace/WorkspaceSidebar';
 import WorkspaceContent from 'components/workspace/WorkspaceContent';
@@ -8,6 +8,7 @@ import LanguageCode from "components/workspace/LanguageCode";
 import { connect } from 'react-redux'; 
 import { fetchWorkspace } from '../redux/workspace';
 import SocketContext from '../components/SocketContext';
+import debounce from 'lodash.debounce';
 
 const {Content} = Layout;
 
@@ -15,14 +16,17 @@ function Workspace(props) {
     const {id} = useParams();
 
     const [code, setCode] = useState();
-
+    const [isRunning, setIsRunning] = useState(false);
+    const [showOutput, setShowOutput] = useState(false);
+    const [output, setOutput] = useState(); 
     const [joinedRoom, setJoinedRoom] = useState(false);
 
     const username = localStorage.getItem('user');
 
     const socket = useContext(SocketContext);
 
-    const RunCode = (input) => {
+    const RunCode = debounce((input) => {
+        setIsRunning(true);
         socket.emit('runCode',{
                 roomId: id,
                 Program: code,
@@ -30,11 +34,17 @@ function Workspace(props) {
                 Input:input
             }
         );
-    }
+    }, 100)
 
     useEffect(()=>{
         props.fetchWorkspace(id)
-        socket.on('output',console.log);
+        socket.on('output',(data)=>{
+            console.log(data);
+            console.log(data.Errors);
+            setIsRunning(false);
+            setOutput(data);
+            setShowOutput(true);
+        });
     },[])
 
     useEffect(()=>{
@@ -74,11 +84,41 @@ function Workspace(props) {
                                     <WorkspaceSidebar 
                                         language={props.workspace?.language} 
                                         sharing={props.workspace?.sharing}
-                                        runCode={RunCode}    
+                                        runCode={RunCode}
+                                        isRunning={isRunning} 
                                     />
                                 </Col>
                             </Row>
                         </Content>
+                        <Drawer
+                            title="Output"
+                            placement="bottom"
+                            closable={true}
+                            onClose={()=>setShowOutput(false)}
+                            visible={showOutput}
+                            >
+                            {output?.Warnings && <Alert
+                                message="Warning"
+                                description={output?.Warnings}
+                                type="warning"
+                                showIcon
+                                />
+                            }
+                            {output?.Errors && <Alert
+                                message="Error"
+                                description={output?.Errors}
+                                type="error"
+                                showIcon
+                                />
+                            }
+                            {output?.Result && <Alert
+                                message="Output"
+                                description={output?.Result}
+                                type="success"
+                                showIcon
+                                />
+                            }
+                        </Drawer>
                     </Layout>
                 ):
                 (

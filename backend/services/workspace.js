@@ -40,13 +40,52 @@ exports.fetchWorkspace = async(id, user) => {
         return;
       }
       data = data.toJSON();
-      // if(user!=data.owner._id && !data.collaborators.includes(user)){
-      //   reject(new Error("Unauthorized Access"));
-      //   return;
-      // }
+      if(user!=data.owner._id && !data.collaborators.includes(user)){
+        reject(new Error("Unauthorized Access"));
+        return;
+      }
       data.isOwner = user==data.owner._id?true:false; 
       resolve(data);
     });
+  })
+}
+
+exports.updateWorkspace = async(_id, collaborators, language, user) => {
+
+  return new Promise((resolve, reject)=>{
+    workspaceModel.findById(_id,(err,doc)=>{
+      if(doc.owner==user){
+        workspaceModel.updateOne({_id},{collaborators,language},(err,doc)=>{
+          if(err){
+            console.log(err)
+            reject(err);
+            return;
+          }
+          resolve(doc);
+        })
+      } else{
+        reject(new Error("Unauthorized Access"))
+      }
+    })
+    
+  })
+}
+
+exports.deleteWorkspace = async(_id,user) => {
+  return new Promise((resolve, reject)=>{
+    workspaceModel.findById(_id,(err,doc)=>{
+      if(doc.owner==user){
+        workspaceModel.deleteOne({_id},(err)=>{
+          if(err){
+            reject(err);
+            return;
+          }
+          resolve();
+        })
+      } else {
+        reject(new Error("Unauthorized Access"))
+      }
+    })
   })
 }
 

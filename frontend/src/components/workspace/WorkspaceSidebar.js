@@ -100,7 +100,7 @@ function WorkspaceSidebar(props) {
                 rows={4} 
             />
             <div style={{display:'flex', flexDirection:'row-reverse', marginTop:'1em'}}>
-                <Button type="primary" onClick={()=>props.runCode(input)}>Run</Button>
+                <Button type="primary" onClick={()=>props.runCode(input)} loading={props.isRunning}>Run</Button>
             </div>
         </Card>
     );

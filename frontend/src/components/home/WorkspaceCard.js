@@ -38,7 +38,7 @@ function WorkspaceCard(props) {
             <Menu.Item onClick={()=>props.configureWorkspace(id)}>
                 Configure
             </Menu.Item>
-            <Menu.Item danger>
+            <Menu.Item danger onClick={()=>props.deleteWorkspace(id)}>
                 Delete
             </Menu.Item>
         </Menu>

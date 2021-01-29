@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {createWorkspace, fetchUserWorkspaces, fetchWorkspace, runCode} = require('../services/workspace');
+const {createWorkspace, fetchUserWorkspaces, fetchWorkspace, updateWorkspace, deleteWorkspace} = require('../services/workspace');
 
 router.post('/new', async (req,res)=>{
   const data = req.body;
@@ -35,6 +35,38 @@ router.get('/:id', async(req, res)=>{
     }
     res.status(500).send({status: false, message: 'Internal Server Error'})
   }
+})
+
+router.put('/:id', async(req, res)=>{
+  const user = req.user._id;
+  const { _id, collaborators, language } = req.body;
+  try{
+    const data = await updateWorkspace(_id, collaborators, language, user);
+    res.send({status:true, data});
+  } catch(err){
+    console.log(err);
+    if(err.message==='Unauthorized Access'){
+      res.status(401).send({status: false, message: err.message});
+      return;
+    }
+    res.status(500).send({status: false, message: 'Internal Server Error'})
+  }
+})
+
+router.delete('/:_id', async(req,res)=>{
+  const user = req.user._id;
+  const _id = req.params._id;
+  try {
+    await deleteWorkspace(_id, user);
+    res.send({status: true});
+  } catch(err){
+    if(err.message==='Unauthorized Access'){
+      res.status(401).send({status: false, message: err.message});
+      return;
+    }
+    res.status(500).send({status: false, message: 'something went wrong'})
+  }
+  
 })
 
 module.exports = router;

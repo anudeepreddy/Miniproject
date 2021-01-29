@@ -185,20 +185,6 @@ function EditorContent(props) {
       onChange={handleChanges}
       value={code}
     />
-    {/* <Row>
-      <Col span={11}>
-        <h3>INPUT</h3>
-        <TextArea id="input" placeholder="Enter the input to be provided" onChange={handleInputChange} allowClear rows={4} />
-      </Col>
-      <Col span={1}></Col>
-      <Col span={11}>
-        <div style={{display:'flex'}}>
-          <h3 style={{marginRight:'10em'}} >OUTPUT</h3>
-          <Button type="primary" onClick={handleClick}>RUN</Button>
-        </div>
-        <h5>{JSON.stringify(props.output)}</h5>
-      </Col>
-    </Row> */}
   </>
   );
 }
