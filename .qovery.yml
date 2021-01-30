@@ -1,0 +1,11 @@
+---
+application:
+  name: "miniproject"
+  project: "Code Live"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-miniproject"
+  routes:
+  - application_name: "miniproject"
+    paths:
+    - "/*"
