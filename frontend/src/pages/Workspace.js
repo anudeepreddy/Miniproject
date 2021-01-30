@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import {Redirect, useParams} from 'react-router-dom';
-import {Col, Layout, Row, Drawer, Alert} from 'antd';
+import {Col, Layout, Row, Drawer, Alert, message} from 'antd';
 import HeaderComponent from 'components/HeaderComponent';
 import WorkspaceSidebar from 'components/workspace/WorkspaceSidebar';
 import WorkspaceContent from 'components/workspace/WorkspaceContent';
@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { fetchWorkspace } from '../redux/workspace';
 import SocketContext from '../components/SocketContext';
 import debounce from 'lodash.debounce';
+import axios from 'axios';
 
 const {Content} = Layout;
 
@@ -36,11 +37,16 @@ function Workspace(props) {
         );
     }, 100)
 
+    const saveCode = (id,content)=> {
+         console.log("id:"+id+" "+"code:"+content);
+        axios.put('/api/workspace/savecode',{id,content});
+    }
+
     useEffect(()=>{
         props.fetchWorkspace(id)
         socket.on('output',(data)=>{
-            console.log(data);
-            console.log(data.Errors);
+             console.log(data);
+             console.log(data.Errors);
             setIsRunning(false);
             setOutput(data);
             setShowOutput(true);
@@ -57,6 +63,7 @@ function Workspace(props) {
 
         socket.on('joined', data => {
             console.log(data);
+            message.info(data);
         });
 
     }, []);
@@ -78,11 +85,12 @@ function Workspace(props) {
                                         isOwner={props.workspace?.isOwner} 
                                         joinedRoom={joinedRoom}
                                         setCode={setCode}
+                                        saveCode={saveCode}
                                     />
                                 </Col>
                                 <Col span={5}>
                                     <WorkspaceSidebar 
-                                        collaborators={props.workspace.collaborators}
+                                        collaborators={props.workspace?.collaborators}
                                         language={props.workspace?.language} 
                                         sharing={props.workspace?.sharing}
                                         runCode={RunCode}

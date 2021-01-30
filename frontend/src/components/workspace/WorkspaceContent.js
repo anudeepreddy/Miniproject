@@ -88,6 +88,12 @@ function EditorContent(props) {
       });
     }
 
+    if(props.isOwner){
+      setInterval(()=>{
+        props.saveCode(props.roomId,editorRef.current.getValue())
+      },30000)
+    }
+
     props.socket.on('endSyncCode',(data)=>{
       //console.log(code);
       console.log("we are starting sync");

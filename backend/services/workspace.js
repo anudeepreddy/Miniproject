@@ -97,3 +97,19 @@ exports.deleteWorkspace = async(_id,user) => {
   })
 }
 
+
+
+exports.saveCode = async(id , content ) => {
+  const _id=id;
+  return new Promise((resolve, reject)=>{
+     workspaceModel.updateOne({_id},{content},(err,doc)=>{
+          if(err){
+            console.log(err)
+            reject(err);
+            return;
+          }
+          resolve(doc);
+        })
+  })
+}
+
