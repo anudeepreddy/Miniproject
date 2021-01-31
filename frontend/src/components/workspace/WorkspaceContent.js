@@ -106,6 +106,10 @@ function EditorContent(props) {
     props.socket.on('output',(output)=>{
       console.log(output);
     })
+
+    props.socket.on('delete-cursor',user=>{
+      guestCursors[user].dispose();
+    })
   }, [isMounted]);
 
 

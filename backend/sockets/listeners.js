@@ -13,6 +13,7 @@ module.exports = (io) => {
       updateCursor(socket);
       syncCode(socket);
       runCode(io,socket);
+      leaveRoom(socket);
     });
   });
 };
@@ -75,5 +76,13 @@ function runCode(io,socket){
       console.log(res.data);
       io.in(roomId).emit("output",res.data);
     })
+  })
+}
+
+function leaveRoom(socket){
+  socket.on('leave-room',(roomId)=>{
+    socket.broadcast.to(roomId).emit("leave-room", `${socket.request.user.username} left the room`);
+    socket.broadcast.to(roomId).emit("delete-cursor", socket.request.user.username);
+    socket.leave(roomId);
   })
 }

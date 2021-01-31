@@ -51,6 +51,10 @@ function Workspace(props) {
             setOutput(data);
             setShowOutput(true);
         });
+        return () => {
+            socket.emit('leave-room',id);
+
+        }
     },[])
 
     useEffect(()=>{
@@ -65,6 +69,10 @@ function Workspace(props) {
             console.log(data);
             message.info(data);
         });
+
+        socket.on('leave-room',data=>{
+            message.info(data);
+        })
 
     }, []);
 
