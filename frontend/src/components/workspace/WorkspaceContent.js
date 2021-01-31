@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { ControlledEditor } from "@monaco-editor/react";
 import {
   EditorContentManager,
   RemoteCursorManager,
 } from "@convergencelabs/monaco-collab-ext";
-import { Input,Button,Row,Col } from 'antd';
+import { Input, Button, Row, Col } from "antd";
 import LanguageCode from "./LanguageCode";
 
 const { TextArea } = Input;
@@ -18,14 +18,14 @@ function EditorContent(props) {
   const remoteCursorManager = useRef();
   const [isMounted, setIsMounted] = useState(false);
   const [code, setCode] = useState("//Type your code here...");
-  const [input,setInput]=useState("");
+  const [input, setInput] = useState("");
   let startSync = false;
   let endSync = false;
   const username = localStorage.getItem("user");
   let sourceUserCursor;
   let guestCursors = {};
 
-  const handleChanges = (ev,val) => {
+  const handleChanges = (ev, val) => {
     props.setCode(val);
   };
 
@@ -33,41 +33,45 @@ function EditorContent(props) {
     setInput(e.target.value);
   }
 
-  function handleClick(){
-    props.socket.emit('runCode',{roomId:props.roomId,Program:editorRef.current.getValue(),LanguageChoice:LanguageCode(props.language),Input:input});
+  function handleClick() {
+    props.socket.emit("runCode", {
+      roomId: props.roomId,
+      Program: editorRef.current.getValue(),
+      LanguageChoice: LanguageCode(props.language),
+      Input: input,
+    });
   }
 
-
-  useEffect(()=>{
+  useEffect(() => {
     console.log(props.joinedRoom);
-    if(!startSync&&!props.isOwner&&props.joinedRoom){
+    if (!startSync && !props.isOwner && props.joinedRoom) {
       console.log(props.joinedRoom);
-      console.log("we are starting sync"+props.roomId);
-      props.socket.emit('startSyncCode',{roomId:props.roomId});
+      console.log("we are starting sync" + props.roomId);
+      props.socket.emit("startSyncCode", { roomId: props.roomId });
       startSync = true;
     }
-  },[props.joinedRoom])
+  }, [props.joinedRoom]);
 
   useEffect(() => {
-    
     if (isMounted) {
-      props.socket.on("editorInsert", ({ index, text }) =>{
-      console.log("Insert", index, text);
-        editorContentManager.current.insert(index, text)}
-      );
-      props.socket.on("editorReplace", ({ index, length, text }) =>{
-      console.log("Replace", index, length, text);
-        editorContentManager.current.replace(index, length, text)}
-      );
-      props.socket.on("editorDelete", ({ index, length }) =>{
-      console.log("Delete", index, length);
-        editorContentManager.current.delete(index, length)}
-      );
+      props.socket.on("editorInsert", ({ index, text }) => {
+        console.log("Insert", index, text);
+        editorContentManager.current.insert(index, text);
+      });
+      props.socket.on("editorReplace", ({ index, length, text }) => {
+        console.log("Replace", index, length, text);
+        editorContentManager.current.replace(index, length, text);
+      });
+      props.socket.on("editorDelete", ({ index, length }) => {
+        console.log("Delete", index, length);
+        editorContentManager.current.delete(index, length);
+      });
       props.socket.on("users-list", (users) => {
         createCursors(users);
       });
       props.socket.on("update-cursor", ({ user, position }) => {
-        console.log({ user, position });
+        console.log("update cursor");
+        console.log(JSON.stringify({ user, position }));
         if (!guestCursors[user]) {
           guestCursors[user] = remoteCursorManager.current.addCursor(
             user,
@@ -77,42 +81,42 @@ function EditorContent(props) {
         }
         guestCursors[user].setPosition(position);
       });
-
     }
-    
-    if(props.isOwner){
-      props.socket.on('startSyncCode',()=>{
+
+    if (props.isOwner) {
+      props.socket.on("startSyncCode", () => {
         console.log("Owner send data");
         console.log(editorRef.current.getValue());
-        props.socket.emit('endSyncCode',{roomId:props.roomId, code:editorRef.current.getValue()});
+        props.socket.emit("endSyncCode", {
+          roomId: props.roomId,
+          code: editorRef.current.getValue(),
+        });
       });
     }
 
-    if(props.isOwner){
-      setInterval(()=>{
-        props.saveCode(props.roomId,editorRef.current.getValue())
-      },30000)
+    if (props.isOwner) {
+      setInterval(() => {
+        props.saveCode(props.roomId, editorRef.current.getValue());
+      }, 30000);
     }
 
-    props.socket.on('endSyncCode',(data)=>{
+    props.socket.on("endSyncCode", (data) => {
       //console.log(code);
       console.log("we are starting sync");
-      if(!endSync){
-        editorContentManager.current.replace(0,code.length,data.code);
+      if (!endSync) {
+        editorContentManager.current.replace(0, code.length, data.code);
         endSync = true;
       }
-    })
+    });
 
-    props.socket.on('output',(output)=>{
+    props.socket.on("output", (output) => {
       console.log(output);
-    })
+    });
 
-    props.socket.on('delete-cursor',user=>{
-      guestCursors[user].dispose();
-    })
+    props.socket.on("delete-cursor", (user) => {
+      if (guestCursors[user]) guestCursors[user].dispose();
+    });
   }, [isMounted]);
-
-
 
   function createCursors(users) {
     users.map((user) => {
@@ -143,13 +147,13 @@ function EditorContent(props) {
       tooltipDuration: 2,
     });
 
-    sourceUserCursor = new RemoteCursorManager({editor:editor,tooltips:false}).addCursor(
+    sourceUserCursor = remoteCursorManager.current.addCursor(
       username,
       "black",
       username
     );
 
-    sourceUserCursor.setOffset(0)
+    sourceUserCursor.setOffset(0);
 
     props.socket.emit("fetch-users", props.roomId);
 
@@ -187,17 +191,16 @@ function EditorContent(props) {
 
   return (
     <>
-    <ControlledEditor
-      editorDidMount={handleEditorMount}
-      height="90vh"
-      theme="light"
-      language={props.language}
-      onChange={handleChanges}
-      value={code}
-    />
-  </>
+      <ControlledEditor
+        editorDidMount={handleEditorMount}
+        height="90vh"
+        theme="light"
+        language={props.language}
+        onChange={handleChanges}
+        value={code}
+      />
+    </>
   );
 }
-
 
 export default EditorContent;
