@@ -109,7 +109,23 @@ function HomeContent(props) {
                                 xl={{span: 6}}
                                 xxl={{span: 6}}
                             >
-                                <WorkspaceCard name={workspace.name} lang={workspace.language} id={workspace._id} configureWorkspace={props.configureWorkspace} deleteWorkspace={props.deleteWorkspace}/>
+                                <WorkspaceCard name={workspace.name} lang={workspace.language} id={workspace._id} disableControl={false} configureWorkspace={props.configureWorkspace} deleteWorkspace={props.deleteWorkspace}/>
+                            </Col>
+                        ))
+                    }
+                </Row>
+                <h3>Shared with me</h3>
+                <Row>
+                {
+                        props.sharedWorkspaces.map((workspace)=>(
+                            <Col
+                                xs={{span: 24}}
+                                md={{span: 12}}
+                                lg={{span: 10}}
+                                xl={{span: 6}}
+                                xxl={{span: 6}}
+                            >
+                                <WorkspaceCard name={workspace.name} lang={workspace.language} id={workspace._id} disableControl={true}/>
                             </Col>
                         ))
                     }

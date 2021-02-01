@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {createWorkspace, fetchUserWorkspaces, fetchWorkspace, updateWorkspace, deleteWorkspace, saveCode} = require('../services/workspace');
+const {createWorkspace, fetchUserWorkspaces, fetchWorkspace, updateWorkspace, deleteWorkspace, saveCode, fetchSharedWorkspaces} = require('../services/workspace');
 
 router.post('/new', async (req,res)=>{
   const data = req.body;
@@ -16,6 +16,16 @@ router.get('/', async(req, res)=>{
   const user = req.user._id;
   try{
     const data = await fetchUserWorkspaces(user);
+    res.send({status:true, data});
+  } catch(err){
+    res.status(500).send({status: false, message: 'Internal Server Error'})
+  }
+})
+
+router.get('/shared', async(req, res)=>{
+  const user = req.user._id;
+  try{
+    const data = await fetchSharedWorkspaces(user);
     res.send({status:true, data});
   } catch(err){
     res.status(500).send({status: false, message: 'Internal Server Error'})

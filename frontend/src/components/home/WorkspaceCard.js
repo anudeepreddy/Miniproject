@@ -46,7 +46,7 @@ function WorkspaceCard(props) {
 
     return (
         <Card style={{height: '10em', width: '20em'}}>
-            <Options>
+            {!props.disableControl && <Options>
                 <Dropdown overlay={optionsMenu} trigger={['click']} style={{height: "5em", width: "7em"}}>
                     <a
                         className="ant-dropdown-link"
@@ -55,7 +55,7 @@ function WorkspaceCard(props) {
                         Options <DownOutlined/>
                     </a>
                 </Dropdown>
-            </Options>
+            </Options>}
             <CardBody>
                 <Row>
                     <Col>

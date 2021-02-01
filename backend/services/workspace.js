@@ -50,6 +50,19 @@ exports.fetchWorkspace = async(id, user) => {
   })
 }
 
+exports.fetchSharedWorkspaces = async(user) => {
+  return new Promise((resolve, reject)=>{
+    workspaceModel.find({collaborators: user}).exec((err,data)=>{
+      if(err){
+        reject(err);
+        return;
+      }
+      
+      resolve(data);
+    })
+  })
+}
+
 function isCollaborator(collaborators,user){
   for(let i=0;i<collaborators.length;i++){
     if(collaborators[i]._id==user)

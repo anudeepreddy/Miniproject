@@ -4,7 +4,7 @@ import {Layout, Modal, Button, Select, Avatar, Alert, Spin, message} from 'antd'
 import HeaderComponent from 'components/HeaderComponent';
 import HomeContent from 'components/home/HomeContent';
 import { connect } from 'react-redux';
-import {createWorkspace, fetchWorkspaces} from '../redux/workspace';
+import {createWorkspace, fetchWorkspaces, fetchSharedWorkspaces} from '../redux/workspace';
 import languages from '../languages';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -136,6 +136,7 @@ function Home(props) {
 
     useEffect(()=>{
         props.fetchWorkspaces();
+        props.fetchSharedWorkspaces();
     },[])
 
     function createWorkspace(data){
@@ -162,7 +163,7 @@ function Home(props) {
                 (
                     <Layout>
                         <HeaderComponent username={loggedInUser}/>
-                        <HomeContent handleCreate={createWorkspace} workspaces={props.workspaces} configureWorkspace={configureWorkspace} deleteWorkspace={deleteWorkspace}/>
+                        <HomeContent handleCreate={createWorkspace} workspaces={props.workspaces} sharedWorkspaces={props.sharedWorkspaces} configureWorkspace={configureWorkspace} deleteWorkspace={deleteWorkspace}/>
                         <Modal
                             visible={visible}
                             title="Configure"
@@ -236,12 +237,14 @@ function Home(props) {
 
 const mapStateToProps = (state) => ({
     isLoggedIn: state.userLogin.loggedIn,
-    workspaces: state.workspace.workspaces
+    workspaces: state.workspace.workspaces,
+    sharedWorkspaces: state.workspace.sharedWorkspaces
 })
 
 const mapDispatchToProps = (dispatch) => ({
     createWorkspace: (data) => dispatch(createWorkspace(data)),
-    fetchWorkspaces: () => dispatch(fetchWorkspaces())
+    fetchWorkspaces: () => dispatch(fetchWorkspaces()),
+    fetchSharedWorkspaces: () => dispatch(fetchSharedWorkspaces())
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(Home);
