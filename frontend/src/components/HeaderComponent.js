@@ -60,7 +60,7 @@ function HeaderComponent(props) {
             separator={<span style={{ color: "white" }}>/</span>}
           >
             <Breadcrumb.Item style={{ color: "white" }}>
-              {props.username}
+              {props.workspaceOwner}
             </Breadcrumb.Item>
             <Breadcrumb.Item style={{ color: "white" }}>
               {props.workspaceName}

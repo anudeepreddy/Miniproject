@@ -42,4 +42,4 @@ io.use(
 
 initListeners(io);
 
-server.listen(keys.port, "0.0.0.0");
+server.listen(keys.port);

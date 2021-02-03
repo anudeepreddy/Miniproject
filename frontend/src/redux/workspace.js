@@ -1,5 +1,5 @@
 import axios from '../axiosconfig';
-import {toast} from 'react-toastify';
+import { message } from "antd";
 
 export const SET_WORKSPACES = "SET_WORKSPACES";
 export const SET_SHARED_WORKSPACES = "SET_SHARED_WORKSPACES";
@@ -93,7 +93,8 @@ export const fetchWorkspace = (id) => async(dispatch, getState) => {
             dispatch(setActiveWorkspace(data.data));
         } else {
             console.log(data.message);
+            message.warn(data.message);
         }
-    }).catch(console.log);
+    }).catch((e)=>message.error(e.message));
 }
 
