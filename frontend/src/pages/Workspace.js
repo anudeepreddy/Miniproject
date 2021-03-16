@@ -69,14 +69,6 @@ function Workspace(props) {
     }, 2000);
   }, []);
 
-  useEffect(()=>{
-    if(id!=props.workspace._id){
-      console.log("we are not in the right workspace. this should show the loading page");
-    } else{
-      console.log("show the page");
-    }
-  },[props.workspace._id]);
-
   useEffect(() => {
     socket.on("server-hello", (data) => {
       setJoinedRoom(true);
