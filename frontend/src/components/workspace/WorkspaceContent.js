@@ -7,17 +7,32 @@ import {
 } from "@convergencelabs/monaco-collab-ext";
 import { Input, Button, Row, Col } from "antd";
 import LanguageCode from "./LanguageCode";
+import { useBeforeunload } from "react-beforeunload";
 
 const { TextArea } = Input;
 
 const colors = ["red", "green", "blue", "orange", "yellow"];
 
 function EditorContent(props) {
+  useBeforeunload(() => {
+    props.saveCode(props.roomId, editorRef.current.getValue());
+    clearInterval(saveInterval);
+    return "You'll lose your data!";
+  });
   const editorRef = useRef();
   const editorContentManager = useRef();
   const remoteCursorManager = useRef();
   const [isMounted, setIsMounted] = useState(false);
-  const [code, setCode] = useState("//Type your code here...");
+  const [code, setCode] = useState((props.code.length==0)?
+    "//Type your code here...":
+    props.code
+  );
+
+  let saveInterval;
+  useEffect(()=>{
+    console.log(props.code.length);
+  },[props.code]);
+
   const [input, setInput] = useState("");
   let startSync = false;
   let endSync = false;
@@ -94,12 +109,6 @@ function EditorContent(props) {
       });
     }
 
-    if (props.isOwner) {
-      setInterval(() => {
-        props.saveCode(props.roomId, editorRef.current.getValue());
-      }, 30000);
-    }
-
     props.socket.on("endSyncCode", (data) => {
       //console.log(code);
       console.log("we are starting sync");
@@ -117,6 +126,20 @@ function EditorContent(props) {
       if (guestCursors[user]) guestCursors[user].dispose();
     });
   }, [isMounted]);
+
+  useEffect(()=>{
+    if (props.isOwner) {
+      saveInterval = setInterval(() => {
+        console.log('content:'+editorRef.current.getValue())
+        props.saveCode(props.roomId, editorRef.current.getValue());
+      }, 10000);
+      return(() => {
+        console.log("clearing interval for save code")
+        clearInterval(saveInterval)
+      })
+    }
+  },[]);
+
 
   function createCursors(users) {
     users.map((user) => {

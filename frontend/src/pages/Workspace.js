@@ -11,7 +11,9 @@ import SocketContext from "../components/SocketContext";
 import debounce from "lodash.debounce";
 import axios from "axios";
 import { useBeforeunload } from "react-beforeunload";
+import Loader from "react-loader-spinner";
 const { Content } = Layout;
+
 
 function Workspace(props) {
   const { id } = useParams();
@@ -19,11 +21,20 @@ function Workspace(props) {
     socket.emit("leave-room", id);
     return "You'll lose your data!";
   });
+
+  useEffect(()=>{
+    return (()=>{
+      console.log("Called leave room")
+      socket.emit("leave-room", id);
+    })
+  },[])
+
   const [code, setCode] = useState();
   const [isRunning, setIsRunning] = useState(false);
   const [showOutput, setShowOutput] = useState(false);
   const [output, setOutput] = useState();
   const [joinedRoom, setJoinedRoom] = useState(false);
+  const [dummywait,setDummywait] = useState(false);
 
   const username = localStorage.getItem("user");
 
@@ -53,12 +64,18 @@ function Workspace(props) {
       setOutput(data);
       setShowOutput(true);
     });
-    // window.onbeforeunload = function () {
-    //   //alert("");
-    //   socket.emit("leave-room", id);
-    //   return "Are you sure you want to leave this room?";
-    // };
+    setTimeout(() => {
+      setDummywait(true);
+    }, 2000);
   }, []);
+
+  useEffect(()=>{
+    if(id!=props.workspace._id){
+      console.log("we are not in the right workspace. this should show the loading page");
+    } else{
+      console.log("show the page");
+    }
+  },[props.workspace._id]);
 
   useEffect(() => {
     socket.on("server-hello", (data) => {
@@ -81,69 +98,81 @@ function Workspace(props) {
   return (
     <>
       {props.isLoggedIn ? (
-        <Layout>
-          <HeaderComponent
-            username={username}
-            workspaceOwner={props.workspace?.owner.username}
-            workspaceName={props.workspace?.name}
+        <>
+          {(props.workspace?._id==id&&dummywait)?(
+          <Layout>
+            <HeaderComponent
+              username={username}
+              workspaceOwner={props.workspace?.owner.username}
+              workspaceName={props.workspace?.name}
+            />
+            <Content>
+              <Row>
+                <Col span={19}>
+                  <WorkspaceContent
+                    language={props.workspace?.language}
+                    socket={socket}
+                    roomId={id}
+                    isOwner={props.workspace?.isOwner}
+                    joinedRoom={joinedRoom}
+                    setCode={setCode}
+                    saveCode={saveCode}
+                    code={props.workspace?.content}
+                  />
+                </Col>
+                <Col span={5}>
+                  <WorkspaceSidebar
+                    collaborators={props.workspace?.collaborators}
+                    language={props.workspace?.language}
+                    sharing={props.workspace?.sharing}
+                    runCode={RunCode}
+                    isRunning={isRunning}
+                  />
+                </Col>
+              </Row>
+            </Content>
+            <Drawer
+              title="Output"
+              placement="bottom"
+              closable={true}
+              onClose={() => setShowOutput(false)}
+              visible={showOutput}
+            >
+              {output?.Warnings && (
+                <Alert
+                  message="Warning"
+                  description={output?.Warnings}
+                  type="warning"
+                  showIcon
+                />
+              )}
+              {output?.Errors && (
+                <Alert
+                  message="Error"
+                  description={output?.Errors}
+                  type="error"
+                  showIcon
+                />
+              )}
+              {output?.Result && (
+                <Alert
+                  message="Output"
+                  description={output?.Result}
+                  type="success"
+                  showIcon
+                />
+              )}
+            </Drawer>
+          </Layout>):(
+          <Loader
+            type="Puff"
+            color="#00BFFF"
+            height={100}
+            width={100}
+            timeout={3000} //3 secs
           />
-          <Content>
-            <Row>
-              <Col span={19}>
-                <WorkspaceContent
-                  language={props.workspace?.language}
-                  socket={socket}
-                  roomId={id}
-                  isOwner={props.workspace?.isOwner}
-                  joinedRoom={joinedRoom}
-                  setCode={setCode}
-                  saveCode={saveCode}
-                />
-              </Col>
-              <Col span={5}>
-                <WorkspaceSidebar
-                  collaborators={props.workspace?.collaborators}
-                  language={props.workspace?.language}
-                  sharing={props.workspace?.sharing}
-                  runCode={RunCode}
-                  isRunning={isRunning}
-                />
-              </Col>
-            </Row>
-          </Content>
-          <Drawer
-            title="Output"
-            placement="bottom"
-            closable={true}
-            onClose={() => setShowOutput(false)}
-            visible={showOutput}
-          >
-            {output?.Warnings && (
-              <Alert
-                message="Warning"
-                description={output?.Warnings}
-                type="warning"
-                showIcon
-              />
-            )}
-            {output?.Errors && (
-              <Alert
-                message="Error"
-                description={output?.Errors}
-                type="error"
-                showIcon
-              />
-            )}
-            {output?.Result && (
-              <Alert
-                message="Output"
-                description={output?.Result}
-                type="success"
-                showIcon
-              />
-            )}
-          </Drawer>
-        </Layout>
+        )}
+        </>
       ) : (
         <Redirect to="/login" />
       )}

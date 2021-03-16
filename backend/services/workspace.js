@@ -33,7 +33,9 @@ exports.fetchUserWorkspaces = async(user) => {
 
 exports.fetchWorkspace = async(id, user) => {
   return new Promise((resolve, reject)=>{
-    workspaceModel.findOne({_id: id}).populate('owner','username').populate('collaborators','username')
+    workspaceModel.findOne({_id: id})
+    .populate('owner','username')
+    .populate('collaborators','username')
     .exec((err,data)=>{
       if(err){
         reject(err);
@@ -113,14 +115,17 @@ exports.deleteWorkspace = async(_id,user) => {
 
 
 exports.saveCode = async(id , content ) => {
+  console.log(content);
+  console.log(id);
   const _id=id;
   return new Promise((resolve, reject)=>{
-     workspaceModel.updateOne({_id},{content},(err,doc)=>{
+     workspaceModel.findOneAndUpdate({_id},{content},(err,doc)=>{
           if(err){
             console.log(err)
             reject(err);
             return;
           }
+          console.log(doc);
           resolve(doc);
         })
   })

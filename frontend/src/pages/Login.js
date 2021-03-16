@@ -11,6 +11,7 @@ import {toast} from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import {login,checkLogin} from '../redux/user/login';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 
 toast.configure();
@@ -27,6 +28,9 @@ function Login(props) {
     const [size] = useState(8);
     return (
         <Row>
+            {
+                props.isLoggedIn&&<Redirect to='/a/home'/>
+            }
             <Col span={7}>
                 <Card bordered={false} style={{
                     minHeight: "100vh",

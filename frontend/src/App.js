@@ -6,6 +6,7 @@ import Home from "pages/Home";
 import Workspace from "pages/Workspace";
 import SocketContext from './components/SocketContext';
 import * as io from 'socket.io-client'
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 function AuthRoutes({match}){
   const token = localStorage.getItem('token');
