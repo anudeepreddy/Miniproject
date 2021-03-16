@@ -23,7 +23,7 @@ export const setActiveWorkspace = (data) => ({
 
 const initialState = {
     workspaces: [],
-    activeWorkspace: null,
+    activeWorkspace: {_id:123},
     sharedWorkspaces: []
 }
 
