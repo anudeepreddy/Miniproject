@@ -29,9 +29,6 @@ function EditorContent(props) {
   );
 
   let saveInterval;
-  useEffect(()=>{
-    console.log(props.code.length);
-  },[props.code]);
 
   const [input, setInput] = useState("");
   let startSync = false;
