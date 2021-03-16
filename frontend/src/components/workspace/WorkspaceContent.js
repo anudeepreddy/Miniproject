@@ -23,7 +23,7 @@ function EditorContent(props) {
   const editorContentManager = useRef();
   const remoteCursorManager = useRef();
   const [isMounted, setIsMounted] = useState(false);
-  const [code, setCode] = useState((props.code.length==0)?
+  const [code, setCode] = useState((props.code?.length==0)?
     "//Type your code here...":
     props.code
   );
