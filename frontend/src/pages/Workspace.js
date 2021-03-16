@@ -164,13 +164,15 @@ function Workspace(props) {
               )}
             </Drawer>
           </Layout>):(
+            <div style={{display: 'grid',placeItems: 'center',minHeight:'100vh'}}>
           <Loader
-            type="Puff"
+            type="Grid"
             color="#00BFFF"
             height={100}
             width={100}
             timeout={3000} //3 secs
           />
+          </div>
         )}
         </>
       ) : (
